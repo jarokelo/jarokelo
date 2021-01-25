@@ -1,0 +1,15 @@
+.back-to-top {
+    display: block;
+    padding: em(50) 0;
+    color: #fff;
+    text-align: center;
+    background: $brand-orange;
+
+    @include desktop {
+        display: none;
+    }
+
+    &__icon {
+        fill: currentColor;
+    }
+}

@@ -1,0 +1,153 @@
+.timeline {
+    $root: &;
+    margin: 0 auto em(40) ;
+    padding-left: em(180);
+
+    @include tablet {
+        padding-left: em(130);
+    }
+
+    &__container {
+        $container: &;
+        position: relative;
+
+        & + & {
+            margin-top: em(110);
+
+            @include tablet {
+                margin-top: em(60);
+            }
+        }
+
+        &__title {
+            position: relative;
+            margin: 0;
+            font-size: em(44);
+            font-weight: 300;
+
+            @include desktop {
+                font-size: em(30, $font-size-desktop);
+            }
+
+            &__icon {
+                display: block;
+                position: absolute;
+                border: 2px dotted $brand-green;
+                border-radius: 100%;
+                height: em(60);
+                width: em(60);
+                top: 0;
+                bottom: 0;
+                left: em(-98);
+                margin: auto;
+
+                .icon {
+                    position: absolute;
+                    top: 0;
+                    bottom: 0;
+                    left: 0;
+                    right: 0;
+                    margin: auto;
+                    fill: $brand-green;
+                }
+
+                @include tablet {
+                    height: em(50);
+                    width: em(50);
+                    left: em(-80);
+                    .icon {
+                        height: em(26);
+                        width: em(26);
+                    }
+                }
+            }
+        }
+
+        &__box {
+            position: relative;
+            background: #fff;
+            border-top-left-radius: 3px;
+            border-top-right-radius: 3px;
+            padding: em(40);
+            margin-top: em(30);
+            margin-left: em(-48);
+            box-shadow: 0 em(2) em(2) rgba(#000, .10);
+
+            .badge {
+                margin-top: 0;
+            }
+
+            @include tablet {
+                padding: em(30);
+            }
+
+            &:after {
+                content: '';
+                display: block;
+                position: absolute;
+                border-right: 2px dotted $brand-dark-gray;
+                width: 1px;
+                height: 100%;
+                top: em(40);
+                left: em(-42, $font-size-desktop);
+
+                @include tablet {
+                    top: em(22);
+                    left: em(-50);
+                }
+            }
+
+            &:first-of-type {
+                &:before {
+                    content: '';
+                    display: block;
+                    position: absolute;
+                    width: 0;
+                    height: 0;
+                    top: em(-22, $font-size-desktop);
+                    left: em(60);
+                    border-top: em(20) solid transparent;
+                    border-bottom: em(20) solid #fff;
+                    border-right: em(20) solid transparent;
+                    border-left: em(20) solid transparent;
+                }
+            }
+
+            &:last-child {
+                border-bottom-left-radius: 3px;
+                border-bottom-right-radius: 3px;
+                box-shadow: 0 em(2) em(2) rgba(#000, .10);
+            }
+
+            & + & {
+                margin-top: 0;
+                border-top-left-radius: 0;
+                border-top-right-radius: 0;
+                border-top: 1px solid $brand-medium-gray;
+            }
+
+            > p {
+                &:first-child {
+                    margin-top: 0;
+                }
+
+                &:last-child {
+                    margin-bottom: 0;
+                }
+            }
+
+
+            @include desktop {
+                font-size: em(17 , $font-size-desktop);
+            }
+        }
+
+        &:last-child {
+            #{$container}__box {
+                &:after {
+                    border-right: none;
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,62 @@
+FROM jarokelo/php-apache:php5-dev
+
+RUN apt-get update && apt-get install -y apt-utils php5-imap php5-dev re2c
+
+RUN pecl install mailparse-2.1.6
+
+COPY default.conf /etc/apache2/sites-enabled/000-default.conf
+
+COPY testport.conf /etc/apache2/conf-available/testport.conf
+COPY config/mailparse.ini /etc/php5/mods-available
+RUN ln -s /etc/php5/mods-available/mailparse.ini /etc/php5/apache2/conf.d/mailparse.ini \
+    && ln -s /etc/php5/mods-available/mailparse.ini /etc/php5/cli/conf.d/mailparse.ini
+
+ARG wwwUid=""
+ARG wwwGid=""
+
+RUN if [ -n "$wwwUid" ] && [ "$wwwUid" -ge 500 ]; then usermod -u "$wwwUid" www-data; fi
+RUN if [ -n "$wwwGid" ] && [ "$wwwGid" -ge 500 ]; then groupmod -g "$wwwGid" www-data; fi
+# /var/www is ~www-data, and npm and composer want to put their caches in there
+RUN chown -R www-data:www-data /var/www
+
+RUN mkdir -p /var/www/app/web/assets
+RUN chown -R www-data:www-data /var/www/app/web/assets
+VOLUME /var/www/app/web/assets
+
+RUN mkdir -p /var/www/app/tests/web/assets
+RUN chown -R www-data:www-data /var/www/app/tests/web/assets
+VOLUME /var/www/app/tests/web/assets
+
+RUN mkdir -p /var/www/app/node_modules
+RUN chown -R www-data:www-data /var/www/app/node_modules
+VOLUME /var/www/app/node_modules
+
+RUN mkdir -p /var/www/.composerhost
+RUN mkdir -p /var/www/.composer
+RUN chown -R www-data:www-data /var/www/.composerhost
+RUN chown -R www-data:www-data /var/www/.composer
+RUN ln -s /var/www/.composerhost/auth.json /var/www/.composer/auth.json
+VOLUME /var/www/.composerhost
+
+ENV CRON_WORKDIR="/var/www/app"
+
+RUN a2enmod ssl
+RUN mkdir -p /etc/apache2/ssl
+COPY server.crt /etc/apache2/ssl/
+COPY server.key /etc/apache2/ssl/
+
+USER www-data
+
+RUN composer global require "fxp/composer-asset-plugin:~1.0"
+
+USER root
+
+RUN chsh -s /bin/bash www-data
+
+WORKDIR /var/www/app
+
+# we need to set the default path for su users since we use su
+RUN sed -i 's/ENV_PATH\(\s*\)PATH=\(.*\)/ENV_PATH\1PATH=\/var\/www\/app\/node_modules\/\.bin:\2/' /etc/login.defs
+
+ENV DOCKERIZED=true
+ENV APPENV=development

@@ -1,0 +1,8 @@
+.rss-container {
+    a {
+        color: $brand-darker-gray;
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+}

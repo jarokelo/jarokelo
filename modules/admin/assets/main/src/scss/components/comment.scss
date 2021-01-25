@@ -1,0 +1,51 @@
+.comment {
+    margin-top: 10px;
+    border-radius: 5px;
+
+    &__container {
+        padding: 5px 10px;
+        margin-bottom: 10px;
+        background-color: white;
+        border-radius: 4px;
+    }
+
+    &__text {
+        max-height: 85px;
+        overflow: hidden;
+
+        &:empty {
+            display: none;
+        }
+        &--full {
+            max-height: inherit;
+        }
+    }
+
+    &__more,
+    &__less {
+        display: none;
+        padding: 5px 0 0 0;
+        color: #337ab7;
+        background: #fff;
+
+        .glyphicon {
+            margin-right: 5px;
+        }
+
+        &:hover {
+            cursor: pointer;
+            text-decoration: underline;
+        }
+    }
+
+    &__less {
+        display: none;
+    }
+
+    &__attachment {
+        img {
+            max-width: 400px;
+            width: auto;
+        }
+    }
+}

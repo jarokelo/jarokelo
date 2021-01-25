@@ -1,0 +1,27 @@
+<?php
+
+return [
+    'app\assets\AppAsset',
+    'app\assets\ModalAsset',
+    'app\assets\MapAsset',
+    'app\assets\MobileDetect',
+    'app\assets\MapboxAsset',
+    'app\assets\MapboxAdvancedAsset',
+    'app\assets\CookieConsentAsset',
+    'app\assets\MapLayerAsset',
+    'app\assets\MapboxLayerAsset',
+    'app\assets\ButtonAsset',
+    'app\assets\ProgressAsset',
+    'app\assets\HighlightJsAsset',
+    'app\assets\BowerAsset',
+    'app\assets\PdfAsset',
+    'app\assets\PasswordValidatorAsset',
+    'app\assets\jqueryupload\AudioPreviewAsset',
+    'app\assets\jqueryupload\CanvasToBlobAsset',
+    'app\assets\jqueryupload\FileuploadAsset',
+    'app\assets\jqueryupload\FileuploadBaseAsset',
+    'app\assets\jqueryupload\ImagePreviewAsset',
+    'app\assets\jqueryupload\LoadImageAsset',
+    'app\assets\jqueryupload\PreviewAsset',
+    'app\assets\jqueryupload\VideoPreviewAsset',
+];

@@ -1,0 +1,93 @@
+{
+    "apachegrp": "",
+    "sentry":{
+        "version": "~0.7.0"
+    },
+    "copykeep": {
+        "localemail": {
+            "src": "config/development/common.local.example",
+            "dest": "config/development/common.local.php"
+        },
+        "sentryConfig": {
+            "src": "config/common.php",
+            "dest": "config/common.php"
+        },
+        "sentryDevConfig": {
+            "src": "config/development/common.php",
+            "dest": "config/development/common.php"
+        },
+        "testroot": {
+            "src": "tests/codeception.yml.sample",
+            "dest": "tests/codeception.yml"
+        },
+        "acceptancehost": {
+            "src": "tests/codeception/acceptance.suite.sample",
+            "dest": "tests/codeception/acceptance.suite.yml"
+        },
+        "jstestconfig": {
+            "src": "tests/config.json.sample",
+            "dest": "tests/config.json"
+        }
+    },
+    "phpcs": {
+        "application": {
+            "dir": [
+                "components/**/*.php",
+                "modules/**/*.php",
+                "!modules/*/views/**/*.php",
+                "!modules/*/mail/**/*.php",
+                "!modules/*/migrations/*",
+                "assets/**/*.php",
+                "controllers/**/*.php",
+                "commands/**/*.php",
+                "models/**/*.php",
+                "widgets/*.php",
+                "!widgets/views/*",
+                "!components/widgets/views/*",
+                "setup/*.php",
+                "!setup/views/*"
+            ],
+            "standard": "codingstandards/Application"
+        },
+        "views": {
+            "dir": [
+                "views/**/*.php",
+                "mail/**/*.php",
+                "modules/*/views/**/*.php",
+                "modules/*/mail/**/*.php",
+                "setup/views/*.php",
+                "widgets/views/*.php",
+                "components/widgets/views/*.php"
+            ],
+            "standard": "codingstandards/ViewsMixed"
+        },
+        "others": {
+            "dir": [
+                "config/**/*.php",
+                "setup.php",
+                "testsetup.php",
+                "migrations/**/*.php",
+                "modules/*/migrations/*.php"
+            ],
+            "standard": "codingstandards/Others"
+        },
+        "options": {
+            "bin": "gulp/phpcs.sh",
+            "fixerbin": "gulp/phpcbf.sh"
+        }
+    },
+    "hooks": [{
+        "src": "pre-commit",
+        "dest": "pre-commit",
+        "docker": true
+    }, {
+        "src": "pre-commit.docker",
+        "dest": "pre-commit"
+    }, {
+        "src": "post-checkout",
+        "dest": "post-checkout"
+    }, {
+        "src": "post-merge",
+        "dest": "post-merge"
+    }]
+}

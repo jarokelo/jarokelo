@@ -1,0 +1,18 @@
+.field {
+    font-family: $font-stack-default;
+    font-size: em(24);
+    font-weight: 500;
+    line-height: em(30);
+    color: $brand-gray;
+    background: none;
+    border: 0;
+
+    &:focus {
+        outline: 0;
+    }
+
+    &--full-width {
+        display: block;
+        width: 100%;
+    }
+}

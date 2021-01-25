@@ -1,0 +1,26 @@
+.legend {
+    overflow: hidden;
+    text-align: center;
+    margin: em(26) auto;
+
+    &:before,
+    &:after {
+        background-color: $brand-darker-gray;
+        content: '';
+        display: inline-block;
+        height: 1px;
+        position: relative;
+        vertical-align: middle;
+        width: 50%;
+    }
+
+    &:before {
+        right: em(50);
+        margin-left: -50%;
+    }
+
+    &:after {
+        left: em(50);
+        margin-right: -50%;
+    }
+}

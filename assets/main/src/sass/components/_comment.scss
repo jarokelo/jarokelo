@@ -1,0 +1,282 @@
+.comment {
+    position: relative;
+    padding: em(35) em(45) em(35) em(115);
+
+    @include desktop {
+        padding-right: 0;
+        padding-bottom: 0;
+    }
+
+    &--default .comment {
+
+        &__body {
+            position: relative;
+            padding: em(20) em(20) em(40) em(30);
+            background: #fff;
+            border-radius: em(4);
+            box-shadow: 0 em(1) 0 $brand-dark-gray;
+
+            @include desktop {
+                box-shadow: 0 em(1) 0 $brand-medium-gray;
+            }
+
+            &::before {
+                position: absolute;
+                top: em(15);
+                right: 100%;
+                border: solid transparent;
+                border-right-color: #fff;
+                border-width: em(15) em(7) em(15) em(15);
+                content: '';
+            }
+
+            > .form__row {
+                margin-bottom: 0;
+            }
+        }
+
+        &__message {
+            margin: 0 0 em(4, 14) 0;
+            font-size: em(24);
+
+            @include desktop {
+                font-size: em(14, $font-size-desktop);
+            }
+        }
+
+        &__text {
+            margin: em(10, 14) 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        &__name {
+            font-size: em(22);
+            font-weight: 600;
+
+            @include desktop {
+                font-size: em(12, $font-size-desktop);
+            }
+        }
+
+        &__date {
+            display: block;
+            font-size: em(22);
+            color: $brand-darker-gray;
+            margin: 0 0 em(10, 14) 0;
+
+            @include desktop {
+                font-size: em(12, $font-size-desktop);
+            }
+        }
+    }
+
+    &--form .comment__body {
+        padding: 0;
+
+        .field {
+            height: em(100);
+            max-height: em(630);
+            padding: em(20);
+            border-radius: em(4);
+            box-shadow: 0 em(-1) 0 $brand-dark-gray;
+            resize: none;
+
+            @include desktop {
+                box-shadow: 0 em(-1) 0 $brand-medium-gray;
+            }
+        }
+
+        .form__row {
+            &.has-error {
+                textarea {
+                    border: none;
+                }
+            }
+        }
+
+        .help-block {
+            font-size: em(24);
+            font-weight: 500;
+            line-height: em(30);
+            margin: 0;
+            padding: em(20);
+
+            @include desktop {
+                padding: em(0) em(20) em(20) em(20);
+            }
+        }
+    }
+
+    &--activity .comment {
+
+        &__name {
+            font-weight: 500;
+            color: $brand-darker-gray;
+        }
+
+        &__message,
+        &__date {
+            font-size: em(20);
+            color: $brand-gray;
+        }
+    }
+
+    &__media {
+        position: absolute;
+        top: em(30);
+        left: em(30);
+        width: em(65);
+        height: em(65);
+        border-radius: 50%;
+
+        @include tablet {
+            background: $brand-light-gray;
+        }
+    }
+
+    &__subject {
+        font-weight: 600;
+        color: $brand-darker-gray;
+        text-transform: uppercase;
+
+        @include desktop {
+            font-size: em(14, $font-size-desktop);
+        }
+    }
+
+    &__message {
+        margin: 0;
+    }
+
+    &__more {
+        padding: 0;
+        margin-bottom: em(30, 20);
+        font-size: em(20);
+        color: $brand-light-purple;
+        background: none;
+        border: 0;
+        cursor: pointer;
+
+        @include desktop {
+            margin-bottom: em(15, 12);
+            font-size: em(12, $font-size-desktop);
+        }
+
+        &:focus {
+            outline: 0;
+        }
+
+        .icon {
+            margin-left: em(5, 20);
+            fill: currentColor;
+        }
+    }
+
+    &__actions {
+
+        > form {
+            line-height: 0;
+        }
+
+        &__button {
+            font-size: em(20);
+            background: none;
+            border: 0;
+            padding: 0;
+            margin: 0 em(20) 0 0;
+
+            @include desktop {
+                font-size: em(12, $font-size-desktop);
+            }
+
+            &:focus {
+                outline: 0;
+            }
+
+            &--like {
+                cursor: pointer;
+                svg {
+                    fill: #fff;
+                }
+                &:hover {
+                    svg {
+                        fill: $brand-green;
+                    }
+                }
+            }
+
+            &--dislike {
+                cursor: pointer;
+                svg {
+                    fill: #fff;
+                }
+                &:hover {
+                    svg {
+                        fill: $brand-red;
+                    }
+                }
+            }
+
+            .icon {
+                width: em(27, 20);
+                height: em(27, 20);
+                margin-right: em(15, 20);
+
+                @include desktop {
+                    width: em(18, 12);
+                    height: em(18, 12);
+                    margin-right: em(5, 12);
+                }
+            }
+
+            &:disabled {
+                opacity: .7;
+                cursor: default;
+                &:hover {
+                    svg {
+                        fill: transparent;
+                    }
+                }
+            }
+        }
+    }
+
+    &__login {
+        padding: em(35) em(45);
+
+        @include desktop {
+            margin-top: em(20);
+            padding: em(35) em(45) 0 em(115);
+        }
+
+        p {
+            margin-top: em(10);
+            margin-bottom: em(10);
+            color: $brand-darker-gray;
+            font-size: em(22);
+        }
+
+        .button {
+            margin-bottom: em(10);
+        }
+
+        @include desktop {
+            padding-right: 0;
+        }
+    }
+
+    &__pictures {
+        &__picture {
+            margin: em(20) 0;
+        }
+    }
+
+    &__attachments {
+        margin-bottom: em(20);
+    }
+
+    &__attachment {
+        margin-bottom: em(15);
+    }
+}

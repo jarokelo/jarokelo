@@ -1,0 +1,123 @@
+.container {
+    padding-right: em(24);
+    padding-left: em(24);
+
+    @include desktop {
+        padding-right: em(45);
+        padding-left: em(45);
+    }
+
+    &--box {
+        @include desktop {
+            padding: em(80);
+        }
+
+        &--mobile {
+            @include mobile {
+                padding: em(80);
+            }
+        }
+
+        &--tablet {
+            @include tablet {
+                padding: em(80);
+            }
+        }
+
+        &--desktop {
+            @include desktop {
+                padding: em(80);
+            }
+        }
+    }
+
+    &__row {
+        margin-left: em(-24);
+        margin-right: em(-24);
+        @include desktop {
+            margin-left: em(-45);
+            margin-right: em(-45);
+        }
+
+        &--tablet {
+            @include tablet {
+                margin-left: em(-24);
+                margin-right: em(-24);
+            }
+        }
+
+        &--desktop {
+            @include desktop {
+                margin-left: em(-45);
+                margin-right: em(-45);
+            }
+        }
+    }
+
+    //flexboxgrid .container override
+    @include override(screen and (min-width: 48em)) {
+        width: auto;
+    }
+}
+
+.flex,
+.row {
+    .col {
+        &--on {
+            padding: 0 em(24);
+        }
+        &--off {
+            padding: 0;
+
+            &--mobile {
+                @include mobile {
+                    padding: 0;
+                }
+            }
+
+            &--tablet {
+                @include tablet {
+                    padding: 0;
+                }
+            }
+
+            &--desktop {
+                @include desktop {
+                    padding: 0;
+                }
+            }
+        }
+    }
+}
+
+.flex {
+    box-sizing: border-box;
+    display: flex;
+    flex: 0 1 auto;
+    flex-direction: row;
+    flex-wrap: wrap;
+
+    &-eq-height {
+        $eq-height: &;
+        box-sizing: border-box;
+        display: flex;
+        flex: 0 1 auto;
+
+        @include ie-only { //restore IE
+            display: initial;
+        }
+    }
+}
+
+.row {
+    margin-left: em(-24);
+    margin-right: em(-24);
+}
+
+[class*="col-"] {
+    padding: 0 em(24);
+}
+
+@include desktop() {
+    @include layout($grid-column-count, $grid-column-width, $grid-gutter);
+}

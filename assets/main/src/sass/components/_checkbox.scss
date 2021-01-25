@@ -1,0 +1,103 @@
+[type="checkbox"] {
+    display: none;
+}
+
+.checkbox {
+    $root: &;
+
+    display: inline-block;
+    vertical-align: middle;
+    width: em(70);
+    height: em(70);
+    border-radius: 3px;
+    background: $brand-lighter-gray;
+    box-shadow: 0 em(-2, 30) 0 rgba(#000, .10);
+    cursor: pointer;
+
+    &__check {
+        display: none;
+        position: relative;
+        width: 100%;
+        height: 100%;
+
+        &:after {
+            content: '';
+            display: block;
+            background-color: transparent;
+            position: absolute;
+            top: em(-10);
+            left: 0;
+            right: 0;
+            bottom: 0;
+            margin: auto;
+            width: em(16);
+            height: em(32);
+            border-bottom: 4px solid $brand-purple;
+            border-right: 4px solid $brand-purple;
+            transform-origin: 50%;
+            transform: rotate(45deg);
+        }
+    }
+
+    &--checked {
+        #{$root}__check {
+            display: block;
+        }
+    }
+
+    &--hover {
+
+    }
+
+    &--container {
+        margin: em(20) 0;
+    }
+
+    &--label {
+        cursor: pointer;
+    }
+
+    &__label {
+        padding: em(26) em(30);
+        cursor: pointer;
+        font-size: em(27);
+        font-weight: 300;
+
+        @include mobile {
+            font-size: em(26);
+        }
+    }
+
+    &--light {
+        background: #fff;
+
+        #{$root}__label {
+
+        }
+    }
+
+    &--left {
+        margin-right: em(15);
+
+        @include desktop {
+            margin-right: em(25);
+        }
+    }
+
+    &--right {
+        margin-left: em(15);
+
+        @include desktop {
+            margin-left: em(25);
+        }
+    }
+
+    &--wrap {
+        white-space: nowrap;
+
+        #{$root}--wrap {
+            white-space: normal;
+            padding-right: em(60);
+        }
+    }
+}

@@ -1,0 +1,71 @@
+.table {
+    background-color: $brand-lighter-gray;
+    border: 1px solid $brand-medium-gray;
+    border-radius: 5px;
+    padding: 15px;
+
+    @media (max-width: 991px) {
+        overflow: scroll;
+    }
+
+    table {
+        border: 1px solid $brand-medium-gray;
+
+        .btn-primary {
+            visibility: hidden;
+        }
+
+        tr {
+            border-bottom: 1px solid $brand-medium-gray;
+
+            &:hover {
+                background-color: $brand-light-gray;
+
+                .btn-primary {
+                    visibility: visible;
+                }
+            }
+
+            th {
+                border: none;
+                background-color: $brand-medium-gray;
+            }
+
+            td {
+                border: none;
+            }
+        }
+    }
+
+    &.table-white {
+        background-color: white;
+
+        thead {
+            background-color: $brand-light-gray;
+            text-transform: uppercase;
+
+            td {
+                font-size: 12px;
+                padding-top: 15px;
+                padding-bottom: 15px;
+            }
+        }
+    }
+
+    .tr-activity {
+        cursor: pointer;
+
+        &:hover {
+            background: $brand-lighter-gray;
+            .message {
+                text-decoration: underline;
+            }
+        }
+
+        img {
+            width: 50px;
+            height: 50px;
+            background-color: $brand-light-gray;
+        }
+    }
+}

@@ -1,0 +1,131 @@
+.video {
+    &-wrapper {
+        position: relative;
+        padding-bottom: 56.25%; /* 16:9 */
+        height: 0;
+    }
+
+    &-container {
+        .video-item {
+            margin-top: em(40);
+            &:first-child {
+                margin-top: 0;
+            }
+
+            &:last-child {
+                padding-bottom: em(60);
+                border-bottom: em(2, 40) solid $brand-light-gray;
+            }
+        }
+
+        .video-preloader {
+            color: $brand-light-gray;
+            font-size: 10px;
+            margin: 80px auto;
+            position: relative;
+            text-indent: -9999em;
+            -webkit-transform: translateZ(0);
+            -ms-transform: translateZ(0);
+            transform: translateZ(0);
+            -webkit-animation-delay: -0.16s;
+            animation-delay: -0.16s;
+
+            &,
+            &:before,
+            &:after {
+                border-radius: 50%;
+                width: 2.5em;
+                height: 2.5em;
+                -webkit-animation-fill-mode: both;
+                animation-fill-mode: both;
+                -webkit-animation: load7 1.8s infinite ease-in-out;
+                animation: load7 1.8s infinite ease-in-out;
+            }
+
+            &:before {
+                left: -3.5em;
+                -webkit-animation-delay: -0.32s;
+                animation-delay: -0.32s;
+            }
+
+            &:after {
+                left: 3.5em;
+            }
+
+            &:before,
+            &:after {
+                content: '';
+                position: absolute;
+                top: 0;
+            }
+        }
+
+        .video-embed-container {
+            position: relative;
+            width: 100%;
+            margin: em(20) auto;
+
+            iframe {
+                width: 100%;
+            }
+        }
+
+        .video-embed-remove {
+            position: absolute;
+            width: 24px;
+            height: 24px;
+            top: -9px;
+            right: -9px;
+            z-index: 21;
+            background: $brand-green;
+            color: #fff;
+            border-radius: 100%;
+            border: none;
+            cursor: pointer;
+
+            .icon {
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                margin: auto;
+                width: em(20);
+                height: em(20);
+                fill: #fff;
+            }
+
+            &:before,
+            &:after {
+                content: '';
+                position: absolute;
+                height: 2px;
+                width: 14px;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                margin: auto;
+                background: #fff;
+                border-radius: 4px;
+                transform-origin: 50% 50%;
+            }
+
+            &:before {
+                transform: rotate(45deg);
+            }
+
+            &:after {
+                transform: rotate(-45deg);
+            }
+        }
+    }
+}
+
+.support-box_video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}

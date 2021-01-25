@@ -1,0 +1,38 @@
+textarea {
+    display: block;
+    width: 100%;
+    padding: em(20, 30) em(30, 30);
+    font-family: $font-family-default;
+    font-size: em(34);
+    font-weight: 300;
+    color: $brand-darker-gray;
+    box-shadow: 0 em(-2, 30) 0 rgba(#000, .10);
+    border-radius: 3px;
+    border: 0;
+
+    @include desktop {
+        font-size: em(30);
+    }
+
+    &.input {
+        &--default {
+            background: $brand-lighter-gray;
+            box-shadow: 0 em(-2, 30) 0 rgba(#000, .10);
+            resize: vertical;
+        }
+
+        &--light {
+            background: #fff;
+        }
+    }
+
+    &:focus {
+        outline: 0;
+    }
+
+    &:disabled,
+    .disabled {
+        opacity: .5;
+        cursor: not-allowed;
+    }
+}

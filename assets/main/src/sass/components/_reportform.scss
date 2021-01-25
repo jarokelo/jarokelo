@@ -1,0 +1,15 @@
+#report-create-form {
+    .user-location-container {
+        position: relative;
+    }
+
+    .user_location__clear.hidden--mobile {
+            position: absolute;
+            bottom: 30px;
+            right: 25px;
+            background: red;
+            border-radius: 50%;
+            height: 30px;
+            width: 30px;
+    }
+}

@@ -1,0 +1,28 @@
+.reportsonmap {
+    &__map {
+        position: relative;
+        height: em(454);
+        margin: 0 em(-24) em(20);
+
+        @include desktop {
+            height: 100%;
+            margin: 0;
+        }
+
+        &__media {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: 50% 50%;
+        }
+    }
+
+    .card {
+        cursor: pointer;
+
+        &:hover {
+            background: $brand-light-gray;
+            transition: background .2s;
+        }
+    }
+}

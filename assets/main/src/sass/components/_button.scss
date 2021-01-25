@@ -1,0 +1,386 @@
+.button {
+    $button: &;
+
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+    vertical-align: middle;
+    border: 0;
+    cursor: pointer;
+
+    &:focus {
+        outline: 0;
+    }
+
+    &.disabled,
+    &:disabled {
+        opacity: .7;
+        cursor: not-allowed;
+    }
+
+    @include desktop {
+        width: auto;
+    }
+
+    &--default {
+        padding: em(11, 18) em(18, 18) em(12, 18);
+        font-size: em(18);
+        font-weight: 600;
+        border-radius: em(50, 18);
+    }
+
+    &--large {
+        padding: em(20, 32) em(40, 32) em(25, 32);
+        font-size: em(32);
+        border-radius: em(50, 32);
+
+        @include desktop {
+            padding: em(17, 20) em(30, 20);
+            font-size: em(20, $font-size-desktop);
+        }
+    }
+
+    &--medium {
+        padding: em(20, 32) em(40, 32) em(25, 32);
+        font-size: em(32);
+        border-radius: em(50, 32);
+
+        @include desktop {
+            padding: em(15, 20) em(50, 20);
+            font-size: em(18, $font-size-desktop);
+        }
+    }
+
+    &--small {
+        padding: em(20, 32) em(40, 32) em(25, 32);
+        font-size: em(22);
+        border-radius: em(50, 32);
+
+        @include desktop {
+            padding: em(10, 20) em(30, 20);
+            font-size: em(16, $font-size-desktop);
+        }
+    }
+
+    &--solid {
+        padding: em(18, 32) em(40, 32) em(23, 32);
+        font-size: em(32);
+        border-radius: em(8, 32);
+    }
+
+    &--social {
+        position: relative;
+        width: em(70);
+        height: em(70);
+        border-radius: 50%;
+
+        .icon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        @include desktop {
+            border-radius: em(4, $font-size-desktop);
+        }
+    }
+
+    &--facebook {
+        background: $facebook-blue;
+        color: #fff;
+
+        .icon {
+            width: em(26);
+            height: em(30);
+            fill: #fff;
+        }
+    }
+
+    &--google {
+        background: $google-red;
+        color: #fff;
+
+        .icon {
+            width: em(26);
+            height: em(30);
+            fill: #fff;
+        }
+    }
+
+    &--twitter {
+        background: $twitter-blue;
+        color: #fff;
+
+        .icon {
+            width: em(30);
+            height: em(30);
+            fill: #fff;
+        }
+    }
+
+    &--paypal {
+        display: block;
+        text-transform: none;
+        color: #fff;
+        background-color: $paypal-blue;
+        border-radius: em(60);
+        transition: background-color .18s ease;
+        min-width: 50%;
+
+        &:hover:enabled {
+            background-color: lighten($paypal-blue, 10%);
+        }
+
+        &.disabled,
+        &:disabled {
+            background: $brand-gray;
+        }
+
+        .icon {
+            margin-right: em(20);
+        }
+    }
+
+    &--light {
+        color: #fff;
+    }
+
+    &--outlined {
+        border: em(2, 18) solid;
+    }
+
+    &--primary {
+        color: #fff;
+        background: $brand-light-orange;
+        transition: background .3s;
+
+        &:hover:enabled {
+            background: lighten($brand-light-orange, 10%);
+        }
+    }
+
+    &--success,
+    &--green {
+        color: #fff;
+        background: $brand-green;
+        transition: background .3s;
+
+        &:hover:enabled {
+            background: lighten($brand-green, 10%);
+        }
+    }
+
+    &--submit {
+        color: #fff;
+        background: $brand-light-purple;
+        transition: background .3s;
+
+        &:hover:enabled {
+            background: lighten($brand-light-purple, 10%);
+        }
+    }
+
+    &--round-icon {
+        border-radius: 100%;
+        width: em(68);
+        height: em(68);
+        padding: 0;
+        line-height: 0;
+
+        svg {
+            fill: #fff;
+            width: em(30);
+            height: em(30);
+        }
+    }
+
+    &--app-store {
+        width: em(259);
+        height: em(75);
+        background: url(#{$path-images}appstore.svg) no-repeat;
+        background-size: contain;
+
+        @include desktop {
+            width: em(180, $font-size-desktop);
+            height: em(55, $font-size-desktop);
+        }
+    }
+
+    &--google-play {
+        width: em(259);
+        height: em(75);
+        background: url(#{$path-images}google-play.svg) no-repeat;
+        background-size: contain;
+
+        @include desktop {
+            width: em(180, $font-size-desktop);
+            height: em(55, $font-size-desktop);
+        }
+    }
+
+    &--link {
+        background: none;
+        border: none;
+        border-radius: 0;
+        box-shadow: none;
+        color: $brand-light-purple;
+    }
+
+    &--full {
+        width: 100%;
+        max-width: 100%;
+
+        &--tablet {
+            @include tablet {
+                width: 100%;
+                max-width: 100%;
+                /*& + & {
+                    margin-top: em(20);
+                }*/
+            }
+        }
+    }
+
+    &--mobilegreen {
+        color: #fff;
+        background: $brand-green;
+
+        &:hover:enabled {
+            background: lighten($brand-green, 10%);
+        }
+
+        @include desktop {
+            background: $brand-light-orange;
+            transition: background .3s;
+
+            &:hover:enabled {
+                background: lighten($brand-light-orange, 10%);
+            }
+        }
+    }
+
+    &__text {
+        display: inline-block;
+        vertical-align: middle;
+        padding: 0 em(6);
+    }
+
+    &--loader {
+        position: relative;
+
+        #{$button}--spinner {
+            display: none;
+            color: #ffffff;
+            font-size: 10px;
+            margin: auto;
+            position: absolute;
+            top: -0.5em;
+            left: 0;
+            right: 0;
+            text-indent: -9999em;
+            transform: translateZ(0);
+            animation-delay: -0.16s;
+
+            &,
+            &:before,
+            &:after {
+                border-radius: 50%;
+                width: 1.2em;
+                height: 1.2em;
+                animation-fill-mode: both;
+                animation: load7 1.8s infinite ease-in-out;
+            }
+
+            &:before {
+                left: -2.2em;
+                animation-delay: -0.32s;
+            }
+
+            &:after {
+                left: 2.2em;
+                animation-delay: -1.32s;
+            }
+
+            &:before,
+            &:after {
+                content: '';
+                position: absolute;
+                top: 0;
+            }
+        }
+    }
+
+    &--loading {
+        text-indent: -9999em;
+
+        #{$button}--spinner {
+            display: block;
+        }
+    }
+
+    &--red {
+        color: #fff;
+        background: $brand-red;
+        transition: background .3s;
+
+        &:hover:enabled {
+            background: lighten($brand-red, 10%);
+        }
+    }
+}
+
+.button-show_me-mobile, .button-show_me-mobile--clear {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    top: 62px;
+}
+
+.button-show_me-mobile {
+    left: 10px;
+}
+
+.button-show_me-mobile svg, .button-show_me-mobile--clear svg {
+    vertical-align: baseline;
+    width: 13px;
+    height: 13px;
+}
+
+.button-show_me-mobile--clear {
+    border-radius: 50%;
+    right: 20px;
+    background: $brand-gray;
+
+}
+
+.location-container {
+    position: relative;
+}
+
+#map-search-form-location-mobile {
+    padding-left: 50px;
+    padding-right: 50px;
+}
+
+@media screen and (min-width: 992px) {
+    #map-search-form-location-mobile {
+        padding-right: 60px;
+    }
+}
+
+@media screen and (max-width: 640px) {
+    .button-show_me-mobile, .button-show_me-mobile--clear {
+        top: 27px;
+    }
+
+    .button-show_me-mobile--clear svg {
+        vertical-align: middle;
+    }
+}
+
+@media screen and (max-width: 390px) {
+    .button-show_me-mobile--clear {
+        right: 10px;
+    }
+}

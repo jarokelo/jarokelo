@@ -1,0 +1,25 @@
+kbd {
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    box-sizing: border-box;
+    background-color: #f7f7f7;
+    border: 1px solid #ccc;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    -moz-box-shadow: 0 1px 0 rgba(0,0,0,0.2),0 0 0 2px #fff inset;
+    -webkit-box-shadow: 0 1px 0 rgba(0,0,0,0.2),0 0 0 2px #fff inset;
+    box-shadow: 0 1px 0 rgba(0,0,0,0.2),0 0 0 2px #fff inset;
+    color: #333;
+    display: inline-block;
+    font-family: inherit;
+    font-size: 13px;
+    line-height: 20px;
+    margin: 0 .1em;
+    min-width: 2em;
+    padding: .1em .6em;
+    text-align: center;
+    text-shadow: 0 1px 0 #fff;
+    vertical-align: bottom;
+}

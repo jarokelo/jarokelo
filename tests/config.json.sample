@@ -1,0 +1,7 @@
+{
+    "host": "http://localhost:8080",
+    "baseUrl": "/nkovacs/yii2/basic/testweb/index-test.php",
+    "mochaPath": "/nkovacs/yii2/basic/tests/web/index-test.php",
+    "seleniumAddress": "http://192.168.88.24",
+    "seleniumPort": "4444"
+}

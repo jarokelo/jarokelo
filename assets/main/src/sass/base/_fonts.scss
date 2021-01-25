@@ -1,0 +1,5 @@
+// Noteworthy
+@include font-face($font-family-default, '300', 'normal', 'Branding-SemiLight', '#{$path-fonts}branding/300/');
+@include font-face($font-family-default, '500', 'normal', 'Branding-Medium', '#{$path-fonts}branding/500/');
+@include font-face($font-family-default, '600', 'normal', 'Branding-SemiBold', '#{$path-fonts}branding/600/');
+@include font-face($font-family-default, '700', 'normal', 'Branding-Bold', '#{$path-fonts}branding/700/');

@@ -1,0 +1,92 @@
+.heading {
+    font-weight: 700;
+
+    &--1 {
+        margin: 0 0 em(15, 56);
+        font-size: em(56);
+
+        @include desktop {
+            margin-bottom: em(5, 50);
+            font-size: em(50, $font-size-desktop);
+        }
+    }
+
+    &--2 {
+        margin: 0 0 em(15, 40);
+        font-size: em(40);
+
+        @include desktop {
+            font-size: em(40, $font-size-desktop);
+        }
+    }
+
+    &--3 {
+        margin: 0 0 em(20, 34);
+        font-size: em(34);
+
+        @include desktop {
+            margin-bottom: em(30, 30);
+            font-size: em(30, $font-size-desktop);
+        }
+    }
+
+    &--4 {
+        margin: 0 0 em(25, 34);
+        font-size: em(34);
+        font-weight: 300;
+
+        @include desktop {
+            margin-bottom: em(25, 24);
+            font-size: em(24, $font-size-desktop);
+        }
+    }
+
+    &--5 {
+        margin: 0 0 em(15, 34);
+        font-size: em(40);
+        font-weight: 500;
+
+        @include desktop {
+            font-size: em(50, $font-size-desktop);
+        }
+    }
+
+    &--6 {
+        margin: em(20) 0 em(15, 34);
+        font-size: em(40);
+        font-weight: 500;
+
+        @include desktop {
+            font-size: em(40, $font-size-desktop);
+        }
+    }
+
+    &--7 {
+        margin: em(20) 0 em(15, 34);
+        font-size: em(30);
+        font-weight: 500;
+
+        @include desktop {
+            font-size: em(30, $font-size-desktop);
+        }
+    }
+}
+
+hr {
+    border: none;
+    border-top: 1px solid $brand-gray;
+}
+
+p {
+    margin-top: em(16, $font-size-desktop);
+    margin-bottom: em(16, $font-size-desktop);
+
+    @include desktop {
+        font-size: em(27);
+    }
+}
+
+.br {
+    margin-top: em(37.5, $font-size-desktop);
+    margin-bottom: em(37.5, $font-size-desktop);
+}

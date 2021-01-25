@@ -1,0 +1,49 @@
+@import "navbar-variant.scss";
+
+$dev-color-bg: #157461;
+$dev-color-border: darken($dev-color-bg, 10%);
+$dev-color: #fff;
+$dev-hover-bg: #b31130;
+$dev-active-bg: lighten($dev-color-bg, 10%);
+
+$staging-color-bg: #2a4353;
+$staging-color-border: darken($staging-color-bg, 10%);
+$staging-color: #fff;
+$staging-hover-bg: #b31130;
+$staging-active-bg: lighten($staging-color-bg, 10%);
+
+$prod-color-bg: #36263a;
+$prod-color-border: darken($prod-color-bg, 10%);
+$prod-color: #fff;
+$prod-hover-bg: #b31130;
+$prod-active-bg: lighten($prod-color-bg, 10%);
+
+$custom-color-bg: #81bb41;
+$custom-color-border: darken($custom-color-bg, 10%);
+$custom-color: #fff;
+$custom-hover-bg: #74a73c;
+$custom-active-bg: lighten($custom-color-bg, 10%);
+
+nav.navbar-dev {
+    @include navbar-variant($dev-color, $dev-hover-bg, $dev-active-bg, $dev-color-bg, $dev-color-border);
+}
+
+nav.navbar-staging {
+    @include navbar-variant($staging-color, $staging-hover-bg, $staging-active-bg, $staging-color-bg, $staging-color-border);
+}
+
+nav.navbar-prod {
+    @include navbar-variant($prod-color, $prod-hover-bg, $prod-active-bg, $prod-color-bg, $prod-color-border);
+}
+
+nav.navbar-custom {
+    @include navbar-variant($custom-color, $custom-hover-bg, $custom-active-bg, $custom-color-bg, $custom-color-border);
+}
+
+.navbar-brand {
+    padding: 5px;
+
+    img {
+        height: 100%;
+    }
+}

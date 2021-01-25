@@ -1,0 +1,136 @@
+.select {
+    position: relative;
+    display: inline-block;
+    vertical-align: middle;
+    max-width: 100%;
+
+    @include ie-only {
+        select::-ms-expand {
+            display: none;
+        }
+    }
+
+    &--default {
+        background: #fff;
+        border: em(1) solid $brand-medium-gray;
+        border-radius: em(8);
+        box-shadow: 0 em(2) 0 rgba(#000, .04);
+
+        .select__icon {
+            right: em(25);
+            width: em(28);
+            height: em(28);
+            background: #fff;
+            fill: $brand-gray;
+        }
+
+        select {
+            padding: em(25, 34) em(25, 12) em(25, 34) em(30, 34);
+            font-size: em(34);
+            font-weight: 300;
+        }
+    }
+
+    &--small {
+        background: #fff;
+        border: em(1) solid $brand-medium-gray;
+        border-radius: em(8);
+        box-shadow: 0 em(2) 0 rgba(#000, .04);
+
+        .select__icon {
+            right: em(25);
+            width: em(28);
+            height: em(28);
+            background: #fff;
+            fill: $brand-gray;
+        }
+
+        select {
+            padding: em(20, 30) em(30, 30);
+            font-size: em(34);
+            font-weight: 300;
+
+            @include desktop {
+                font-size: em(30);
+            }
+        }
+    }
+
+    &--primary {
+        font-weight: 300;
+        border-bottom: em(1) dotted $brand-dark-blue;
+        border-radius: em(4, $font-size-desktop);
+
+        .select__icon {
+            right: em(20);
+            width: em(20);
+            height: em(20);
+            fill: $brand-dark-blue;
+
+            @include desktop {
+                width: em(15);
+                height: em(15);
+            }
+        }
+
+        select {
+            padding: em(15, 34) em(20, 12) em(15, 34) em(20, 34);
+            font-size: em(34);
+            font-weight: 300;
+            width: 100%;
+
+            &:hover {
+                cursor: pointer;
+            }
+        }
+
+        &:hover {
+            background: white;
+        }
+
+        @include desktop {
+            max-width: none;
+        }
+
+        &--long {
+            margin: 0 em(20, $font-size-desktop);
+
+            @include desktop {
+                margin: 0;
+            }
+        }
+    }
+
+    &--full {
+        width: 100%;
+        max-width: 100%;
+
+        select {
+            width: 100%;
+        }
+    }
+
+    &__icon {
+        position: absolute;
+        top: 50%;
+        pointer-events: none;
+        transform: translateY(-50%);
+    }
+
+    select {
+        text-indent: 1px;
+        text-overflow: '';
+        background: none;
+        border: none;
+        appearance: none;
+
+        &.full {
+            width: 100%;
+            max-width: 100%;
+        }
+
+        &:focus {
+            outline: 0;
+        }
+    }
+}

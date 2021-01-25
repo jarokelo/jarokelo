@@ -1,0 +1,21 @@
+.panel-login {
+    border: 1px solid $brand-green;
+}
+
+.panel-heading {
+    background-color: $brand-green;
+    text-align: center;
+    color: white;
+}
+
+.btn-login {
+    background-color: $brand-green;
+    color: white;
+    border-color: darken($brand-green, 10%);
+    transition: background-color 500ms;
+
+    &:hover {
+        background-color: darken($brand-green, 10%);
+        color: white;
+    }
+}

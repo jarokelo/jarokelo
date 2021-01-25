@@ -1,0 +1,58 @@
+// Typography
+// ======================================================
+$font-family-default: 'Branding';
+
+$font-stack-default: $font-family-default, sans-serif;
+
+$font-size-base: 26px;
+$font-size-desktop: 16px;
+$font-line-height-base: 1.33;
+$font-weight-base: 500;
+
+// Basic variables
+// ======================================================
+$default-padding: 20px;
+
+// Icons
+// ======================================================
+$icons: (  );
+
+// Paths
+// ======================================================
+$path-images: '../images/';
+$path-fonts: '../fonts/';
+
+// Breakpoints
+// ======================================================
+$breakpoint-desktop: 1080px;
+$breakpoint-tablet: max-width 1079px;
+$breakpoint-mobile: max-width 640px;
+
+$breakpoint-navigation-item-last: 1200px;
+$breakpoint-navigation-item-last-1: 1136px;
+
+// Grid
+// ======================================================
+$grid-column-count: 12;
+$grid-column-width: 70px;
+$grid-gutter: 40px;
+
+// Z-index
+// ======================================================
+$z-index: (
+    header: 20,
+    navigation: 10,
+    navigation-menu-icon: 9,
+    header-user-menu: 2
+);
+
+// Globals
+// ======================================================
+$button-border-radius: 4px;
+
+$grid-gutter-width: 48;
+$wall-enabled: false;
+$breakpoint-extra-small:  0;
+$breakpoint-small: 640;
+$breakpoint-medium: 991;
+$breakpoint-large: 1080;

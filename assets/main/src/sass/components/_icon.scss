@@ -1,0 +1,97 @@
+.icon {
+    display: inline-block;
+    width: em(18);
+    height: em(18);
+    vertical-align: middle;
+
+    @include desktop {
+        width: em(16, $font-size-desktop);
+        height: em(16, $font-size-desktop);
+    }
+
+    &--large {
+        width: em(28);
+        height: em(28);
+    }
+
+    &--largest {
+        width: em(40);
+        height: em(40);
+    }
+
+    &--before {
+        margin-right: em(10);
+
+        /*@include desktop {
+            margin-right: em(10, $font-size-desktop);
+        }*/
+    }
+
+    &--after {
+        margin-left: em(10);
+
+        /*@include desktop {
+            margin-left: em(10, $font-size-desktop);
+        }*/
+    }
+
+    &--seal {
+        position: relative;
+        background: $brand-purple;
+        height: em(100);
+        width: em(100);
+        border-radius: 100%;
+        margin: 0 auto em(10);
+
+        @include desktop {
+            width: em(120);
+            height: em(120);
+        }
+
+        .icon {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            right: 0;
+            left: 0;
+            margin: auto;
+            width: em(34);
+            height: em(34);
+
+            @include desktop {
+                width: em(32, $font-size-desktop);
+                height: em(32, $font-size-desktop);
+            }
+        }
+    }
+
+    //PLACEHOLDER
+    &--checkmark {
+        &:before,
+        &:after {
+            content: '';
+            display: block;
+            position: absolute;
+            top: 4px;
+            bottom: 0;
+            right: -8px;
+            left: 0;
+            margin: auto;
+            border-radius: 3px;
+            background: #fff;
+            width: 5px;
+        }
+
+        &:before {
+            height: 14px;
+            left: -23px;
+            top: 10px;
+            transform: rotate(-45deg);
+        }
+
+        &:after {
+            height: 26px;
+            transform: rotate(45deg);
+        }
+    }
+}

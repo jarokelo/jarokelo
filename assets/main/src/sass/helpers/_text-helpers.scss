@@ -1,0 +1,30 @@
+.ir {
+    overflow: hidden;
+    background-color: transparent;
+    border: 0;
+
+    &::before {
+        display: block;
+        width: 0;
+        height: 150%;
+        content: '';
+    }
+}
+
+.text {
+    &-center {
+        text-align: center;
+    }
+
+    &-left {
+        text-align: left;
+    }
+
+    &-right {
+        text-align: right;
+    }
+
+    &--light {
+        color: $brand-gray;
+    }
+}

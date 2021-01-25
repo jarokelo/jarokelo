@@ -1,0 +1,65 @@
+.link {
+    color: #fff;
+
+    &:hover {
+        text-decoration: underline;
+    }
+
+    &--default {
+        color: $brand-gray;
+
+        .link__icon {
+            fill: $brand-dark-blue;
+        }
+    }
+
+    &--black {
+        color: $brand-darker-gray;
+        font-style: normal;
+        transition: color 200ms;
+
+        &:hover {
+            color: lighten($brand-darker-gray, 14%);
+        }
+    }
+
+    &--cutted{
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: block;
+    }
+
+    &--primary {
+        position: relative;
+        display: inline-block;
+
+        &::before {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 0;
+            border-bottom: em(1) solid;
+            content: '';
+            transition: width .3s ease-in-out;
+        }
+
+        &:hover {
+            text-decoration: none;
+
+            &::before {
+                width: 100%;
+            }
+        }
+    }
+
+    &--info {
+        color: $brand-light-purple;
+        font-style: normal;
+        transition: color 200ms;
+
+        &:hover {
+            color: lighten($brand-light-purple, 14%);
+        }
+    }
+}

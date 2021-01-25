@@ -1,0 +1,23 @@
+@import "../../../main/src/sass/helpers/_colors.scss";
+
+body {
+    color: $brand-darker-gray;
+    font-family: sans-serif;
+}
+
+.header {
+    font-size: 16px;
+}
+
+.datasheet td {
+    font-size: 14px; }
+
+.content {
+    line-height: 200%;
+}
+
+.footer {
+    padding-top: 10px; }
+
+.footer td {
+    font-size: 12px; }

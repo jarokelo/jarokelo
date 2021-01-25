@@ -1,0 +1,13 @@
+.mapboxgl-compact {
+  height: 20px;
+}
+
+#map {
+  height: 262px;
+}
+
+@media (min-width: 1080px) {
+  #map {
+    height: 454px;
+  }
+}

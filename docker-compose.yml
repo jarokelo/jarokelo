@@ -1,0 +1,78 @@
+version: '2'
+services:
+    web:
+        build:
+            context: ./docker
+            dockerfile: Dockerfile.dev
+            args:
+                - wwwUid
+                - wwwGid
+        ports:
+            - 80
+            - 443
+            - "8606:8606" # websocket for the admin
+            - "11111:443"
+        expose:
+            - 8080
+        volumes:
+            - .:/var/www/app
+            - ./cron:/etc/gocron
+            - nodemodules:/var/www/app/node_modules
+            - ~/.composer:/var/www/.composerhost
+        links:
+            - mailer
+            - db
+            - logger
+            - selenium
+        environment:
+            DB_DSN: mysql:host=db;dbname=database
+            TEST_DB_DSN: mysql:host=db;dbname=testdb
+            DB_USERNAME: php
+            DB_PASSWORD: phppass
+            DB_ROOT_PASSWORD: password
+            DOCKER_ABORT_ON_FAILURE:
+    selenium:
+        image: nkovacs/selenium-standalone-phantomjs
+    mailer:
+        image: jarokelo/mailcatcher
+        command: [--smtp-port, "25", --smtp-ip, "0.0.0.0", --http-ip, "0.0.0.0"]
+        expose:
+            - 25
+        ports:
+            - "44444:1080"
+    db:
+        image: mariadb:10
+        command: [--character-set-server=utf8, --collation-server=utf8_unicode_ci]
+        ports:
+            - 3306
+        environment:
+            MYSQL_DATABASE: database
+            MYSQL_USER: php
+            MYSQL_PASSWORD: phppass
+            MYSQL_ROOT_PASSWORD: password
+        volumes:
+            - dbdata:/var/lib/mysql
+        ports:
+            - "33333:3306"
+    pma:
+        image: phpmyadmin/phpmyadmin
+        ports:
+            - "22222:80"
+        links:
+            - db
+    logger:
+        image: jarokelo/rsyslog
+        volumes:
+            - /var/log
+    logio:
+        image: jarokelo/logio
+        ports:
+            - 28778
+        volumes_from:
+            - logger
+        depends_on:
+            - logger
+volumes:
+    dbdata: {}
+    nodemodules: {}
+

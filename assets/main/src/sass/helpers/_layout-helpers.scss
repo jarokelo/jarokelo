@@ -1,0 +1,197 @@
+@media screen {
+    .print--hidden {
+
+    }
+    .screen--hidden {
+        display: none;
+    }
+}
+
+@media print {
+    .print--hidden {
+        display: none;
+    }
+    .screen--hidden {
+
+    }
+}
+
+.hidden {
+    &--desktop {
+        @include desktop {
+            display: none;
+        }
+    }
+
+    &--mobile {
+        display: none;
+
+        @include desktop {
+            display: block;
+        }
+
+        &--inline {
+            display: none;
+
+            @include desktop {
+                display: inline;
+            }
+        }
+
+        &--inline-block {
+            display: none;
+
+            @include desktop {
+                display: inline-block;
+            }
+        }
+
+        &--table-cell {
+            display: none;
+
+            @include desktop {
+                display: table-cell;
+            }
+        }
+
+        &--webkitbox {
+            display: none;
+
+            @include desktop {
+                display: -webkit-box;
+            }
+        }
+    }
+}
+
+.clearfix {
+    @include clearfix;
+}
+
+.visuallyhidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    border: 0;
+
+    &.focusable {
+        &:active,
+        &:focus {
+            position: static;
+            width: auto;
+            height: auto;
+            margin: 0;
+            overflow: visible;
+            clip: auto;
+        }
+    }
+}
+
+.full {
+    width: 100%;
+    max-width: 100%;
+}
+
+.top {
+    display: inline-block;
+    vertical-align: top;
+}
+
+.middle {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.bottom {
+    display: inline-block;
+    vertical-align: bottom;
+}
+
+.no-padding-right {
+    padding-right: 0;
+}
+
+.mb-15 {
+    margin-bottom: 15px;
+}
+
+.mb-35 {
+    margin-bottom: 35px;
+}
+
+.center {
+    &--images {
+        img {
+            margin: auto;
+        }
+    }
+}
+
+.inline-block {
+    display: inline-block;
+}
+
+.fill {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+
+    img {
+        flex-shrink:0;
+        min-width:100%;
+        min-height:100%
+    }
+}
+
+.pull {
+    &--left {
+        float: left;
+    }
+
+    &--right {
+        float: right;
+    }
+}
+
+.offset {
+    &--off {
+        margin: 0;
+        padding: 0;
+    }
+    &--top {
+        padding-top: em(30);
+
+        @include desktop {
+            padding-top: em(60);
+        }
+    }
+
+    &--right {
+        padding-right: em(30);
+
+        @include desktop {
+            padding-right: em(60);
+        }
+    }
+
+    &--bottom {
+        padding-bottom: em(30);
+
+        @include desktop {
+            padding-bottom: em(60);
+        }
+    }
+
+    &--left {
+        padding-left: em(30);
+
+        @include desktop {
+            padding-left: em(60);
+        }
+    }
+}

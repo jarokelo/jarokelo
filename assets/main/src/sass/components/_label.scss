@@ -1,0 +1,24 @@
+.label {
+    display: inline;
+    text-transform: uppercase;
+    font-size: em(20);
+    padding: em(16) em(24);
+    background: $brand-gray;
+    color: #fff;
+    border-radius: 3px;
+
+    &--default {
+        display: block;
+        margin-bottom: em(20, 26);
+        font-family: $font-family-default;
+        font-size: em(30);
+        padding: 0;
+        font-weight: 300;
+        color: $brand-darker-gray;
+        background: transparent;
+
+        @include desktop {
+            font-size: em(27);
+        }
+    }
+}

@@ -1,0 +1,339 @@
+.statistics {
+    @include desktop {
+        position: relative;
+        padding-top: em(30, $font-size-desktop);
+        padding-bottom: em(60, $font-size-desktop);
+        margin: 0;
+        text-align: center;
+    }
+
+    .inline {
+        display: inline-block;
+
+        &.mobile__block {
+            display: block;
+
+            @include desktop {
+                display: inline-block;
+            }
+        }
+    }
+
+    &--grid {
+        @include desktop {
+            float: left;
+            width: 100%;
+            padding: 0;
+            margin-bottom: em(10, $font-size-desktop);
+            text-align: left;
+        }
+    }
+
+    &__label {
+        @include desktop {
+            margin: 0;
+            font-size: em(15, $font-size-desktop);
+            font-weight: 300;
+        }
+    }
+
+    &__value {
+        @include desktop {
+            margin: 0;
+            font-size: em(22, $font-size-desktop);
+            font-weight: 700;
+            color: $brand-orange;
+            line-height: 1;
+        }
+    }
+
+    &__submenu {
+        li {
+            display: inline-block;
+            margin-bottom: em(20);
+            width: 32%;
+            border-bottom: em(1, $font-size-desktop) solid $brand-lighter-gray;
+            transition: border-bottom 400ms;
+            text-align: center;
+
+            a {
+                display: inline-block;
+                padding: em(20) em(10);
+                color: $brand-darker-gray;
+                text-transform: uppercase;
+                font-size: em(22);
+            }
+
+            &:hover, &.active {
+                border-bottom: em(4, $font-size-desktop) solid $brand-dark-blue;
+                cursor: pointer;
+
+                a {
+                    color: $brand-dark-blue;
+                }
+            }
+        }
+
+        @include desktop {
+            li {
+                margin-right: -4px;
+                margin-bottom: em(60, $font-size-desktop);
+                width: em(180, $font-size-desktop);
+
+                a {
+                    padding: em(25, $font-size-desktop);
+                    font-size: em(16, $font-size-desktop);
+                }
+            }
+        }
+    }
+
+    &__mainfilter {
+        padding-bottom: em(20);
+        border-bottom: em(1, $font-size-desktop) solid $brand-lighter-gray;
+
+        @include desktop {
+            padding-bottom: em(35, $font-size-desktop);
+            border-bottom: em(1, $font-size-desktop) solid $brand-lighter-gray;
+        }
+    }
+
+    &__subfilter {
+        padding: em(25) 0 em(25, $font-size-desktop);
+
+        @include desktop {
+            padding: em(45, $font-size-desktop) 0 em(25, $font-size-desktop);
+
+            .filter__title {
+                font-size: em(21, $font-size-desktop);
+            }
+        }
+    }
+
+    .statistics__user__wrapper.statistics__user__wrapper {
+        position: relative;
+
+        @include desktop {
+            padding: 0 em(50, $font-size-desktop);
+
+            &:first-child {
+                border-right: 1px solid $brand-medium-gray;
+            }
+        }
+    }
+
+    &__user {
+        position: relative;
+        display: table;
+        color: $brand-darker-gray;
+        border-top: em(1) solid $brand-medium-gray;
+
+        .image, .name, .point, .rank {
+            display: table-cell;
+            vertical-align: middle;
+        }
+
+        .image {
+            width: 10%;
+
+            &__wrapper {
+                padding: 10px 10px 10px 0;
+                height: 60px;
+                width: 50px;
+            }
+
+            img {
+                height: 100%;
+                background-color: $brand-dark-gray;
+                border-radius: 50%;
+                object-fit: cover;
+            }
+        }
+
+        .name {
+            width: 60%;
+            font-weight: bold;
+            text-align: left;
+        }
+
+        .point {
+            width: 20%;
+            padding-right: em(10);
+            text-align: right;
+        }
+
+        .rank {
+            padding-left: em(10);
+            width: 10%;
+        }
+
+        &__info {
+            float: left;
+            padding: em(10) em(20) 0 em(10);
+            text-align: left;
+
+            p {
+                margin: em(10);
+            }
+        }
+
+        &--loggedin {
+            color: #fff;
+            background-color: $brand-green;
+        }
+
+        &--1, &--2, &--3 {
+            @include desktop {
+                width: 100%;
+                border-top: none;
+
+                .image, .name, .point, .rank {
+                    display: block;
+                    width: 100%;
+                    text-align: center;
+                }
+
+                .image {
+                    height: em(80, $font-size-desktop);
+
+                    &__wrapper {
+                        display: inline-block;
+                        padding: 0;
+                        height: 100%;
+                        width: em(80, $font-size-desktop);
+                    }
+
+                    img {
+                        display: inline-block;
+                        height: 100%;
+                    }
+                }
+
+                .rank {
+                    position: absolute;
+                    top: em(50, $font-size-desktop);
+                    padding-left: 0;
+
+                    &__inside {
+                        display: inline-block;
+                        width: em(40);
+                        height: em(40);
+                        color: #fff;
+                        background-color: $brand-light-purple;
+                        border-radius: 50%;
+                        font-weight: 100;
+                        line-height: em(24, $font-size-desktop);
+                    }
+                }
+
+                .name {
+                    margin-bottom: 0;
+                }
+
+                .point {
+                    .points {
+                        margin-top: 0;
+                    }
+                }
+
+                &.statistics__user--loggedin {
+                    background-color: transparent;
+                    color: $brand-darker-gray;
+
+                    .rank {
+                        &__inside {
+                            background-color: $brand-green;
+                        }
+                    }
+                }
+            }
+        }
+
+        &--1 {
+            @include desktop {
+                margin-bottom: em(60, $font-size-desktop);
+            }
+        }
+
+        &--2, &--3 {
+            @include desktop {
+                position: absolute;
+                top: em(160, $font-size-desktop);
+                width: 20%;
+
+                .image {
+                    height: em(60, $font-size-desktop);
+
+                    &__wrapper {
+                        width: em(60, $font-size-desktop);
+                    }
+                }
+
+                .rank {
+                    top: em(30, $font-size-desktop);
+                }
+            }
+        }
+
+        &--3 {
+            @include desktop {
+                right: em(15, $font-size-desktop);
+            }
+        }
+    }
+
+    .accordion__title {
+        padding: em(30) em(15);
+
+        .heading--4 {
+            display: inline-block;
+            vertical-align: middle;
+            position: absolute;
+            right: em(40);
+            top: 0;
+            bottom: 0;
+            margin: auto em(30);
+            height: em(30);
+            font-size: em(26);
+        }
+    }
+
+    &__city__report {
+        margin-bottom: em(20);
+        font-size: em(60);
+        font-weight: 600;
+
+        p {
+            margin-top: 0;
+            font-size: em(15);
+            font-weight: 500;
+        }
+    }
+
+    &__city__solved, &__city__unsolved, &__city__progress {
+        display: inline-block;
+        width: 32%;
+        font-size: em(50);
+        font-weight: 600;
+
+        p {
+            margin-top: 0;
+            font-size: em(12);
+            font-weight: 500;
+        }
+    }
+
+    &__institution__report {
+        display: inline-block;
+        margin-bottom: em(20);
+        font-size: em(60);
+        font-weight: 600;
+        width: 49%;
+
+        p {
+            margin-top: 0;
+            font-size: em(15);
+            font-weight: 500;
+        }
+    }
+}

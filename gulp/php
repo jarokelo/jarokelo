@@ -1,0 +1,6 @@
+#!/bin/sh
+
+PATH="$__ORIG_PATH"
+export PATH
+
+/usr/bin/env php -d short_open_tag=1 "$@"

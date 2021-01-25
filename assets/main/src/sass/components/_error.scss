@@ -1,0 +1,19 @@
+.error {
+    &__sum {
+        position: fixed;
+        top: 0;
+        padding: em(20);
+        margin-bottom: em(40);
+        width: 100%;
+        background: $brand-red;
+        color: #fff;
+        font-size: em(21);
+        text-align: center;
+        z-index: 10;
+
+        @include desktop {
+            padding: em(10, $font-size-desktop) em(20, $font-size-desktop);
+            font-size: em(21, $font-size-desktop);
+        }
+    }
+}

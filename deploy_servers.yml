@@ -1,0 +1,17 @@
+staging:
+  host: staging.myproject.hu
+  user: www
+  forward_agent:
+  branch: staging
+  deploy_path: /data/apache/htdocs/staging.myproject.hu
+  stage: staging
+  webserver_user: www-data
+
+production:
+  host: myproject.hu
+  user: www
+  forward_agent:
+  branch: release
+  deploy_path: /data/apache/htdocs/myproject.hu
+  stage: production
+  webserver_user: www-data

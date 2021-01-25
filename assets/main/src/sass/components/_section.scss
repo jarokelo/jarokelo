@@ -1,0 +1,44 @@
+.section {
+
+    &__header {
+        text-align: center;
+
+        @include desktop {
+            @include clearfix;
+
+            text-align: left;
+        }
+    }
+
+    &__footer {
+        margin-bottom: em(50);
+        text-align: center;
+    }
+
+    &__link {
+        @include desktop {
+            float: right;
+            margin-top: em(7, $font-size-desktop);
+        }
+    }
+
+    &--light {
+        background-color: #fff;
+    }
+
+    &--grey {
+        background-color: $brand-light-gray;
+    }
+
+    &--dark {
+        background-color: $brand-lighter-gray;
+    }
+
+    &--rounded {
+        border-radius: em(10);
+    }
+
+    &--orange {
+        background-color: $brand-hero-orange;
+    }
+}

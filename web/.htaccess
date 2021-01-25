@@ -1,0 +1,59 @@
+RewriteEngine On
+
+# redirect old, indexed pages to the new url
+RewriteRule ^admin/?$ / [R=301,L]
+#RewriteRule ^\?widget=([^/]+)/?$ /widget/index?widget=$1 [R=301,L]
+RewriteRule ^([^/]+)/osszes/?$ /bejelentesek/$1 [R=301,L]
+RewriteRule ^([^/]+)/uj-bejelentes/?$ /uj-bejelentes/$1 [R=301,L]
+RewriteRule ^([^/]+)/statisztikak/?$ /statisztikak/$1 [R=301,L]
+RewriteRule ^([^/]+)/terkep/?$ /terkep/$1 [R=301,L]
+RewriteRule ^(alsonemedi|budapest|budaors|debrecen|kecskemet|nyiregyhaza|ozd|szeged|szentendre|veszprem)/?$ /bejelentesek/$1 [R=301,L]
+RewriteRule ^(alsonemedi|budapest|budaors|debrecen|kecskemet|nyiregyhaza|ozd|szeged|szentendre|veszprem)/bejelentesek/([^/]+)/?$ /bejelentesek/$1/$2 [R=301,L]
+RewriteRule ^([^/]+)/bejelentesek/([0-9]+)/([^/]+)/?$ /bejelentesek/$1/$2/$3 [R=301,L]
+RewriteRule ^alerts/respond(.*)$ /rolunk/hivatal/? [R=301,L]
+
+#redirect old widget form with city to report/create
+RewriteCond %{QUERY_STRING} ^widget=(.*) [NC]
+RewriteRule ^$ /widget/index?widget=%1 [R=301,NE,L]
+
+#redirect old widget form with city to report/create
+RewriteCond %{QUERY_STRING} ^mesto=([^&]+) [NC]
+RewriteRule ^widget/form$ /uj-bejelentes/%1? [R=301,NE,L]
+
+#redirect old widget form without city to report/create
+RewriteRule ^widget/form$ /uj-bejelentes [R=301,L]
+
+# redirect www to non-www
+RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
+RewriteRule ^(.*)$ https://%1/$1 [R=301,L]
+
+# redirect http to https
+RewriteCond %{HTTPS} !=on
+RewriteCond %{HTTP:X-Forwarded-Proto} !https [NC]
+RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# if a directory or a file exists, use it directly
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# otherwise forward it to index.php
+RewriteRule . index.php
+
+<IfModule mod_expires.c>
+ExpiresActive On
+ExpiresByType image/ico "access plus 1 year"
+ExpiresByType image/png "access plus 1 year"
+ExpiresByType image/gif "access plus 1 year"
+ExpiresByType image/jpeg "access plus 1 year"
+ExpiresByType image/vnd.microsoft.icon "access plus 1 year"
+ExpiresByType text/css "access plus 1 year"
+ExpiresByType application/x-javascript "access plus 1 year"
+ExpiresByType application/javascript "access plus 1 year"
+ExpiresByType text/javascript "access plus 1 year"
+# Add a far future Expires header for fonts
+ExpiresByType application/vnd.ms-fontobject "access plus 1 year"
+ExpiresByType font/ttf "access plus 1 year"
+ExpiresByType font/otf "access plus 1 year"
+ExpiresByType font/x-woff "access plus 1 year"
+ExpiresByType image/svg+xml "access plus 1 year"
+</IfModule>

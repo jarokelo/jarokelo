@@ -1,0 +1,103 @@
+input {
+    display: block;
+    width: 100%;
+    padding: em(20, 30) em(30, 30);
+    font-family: $font-family-default;
+    font-size: em(34);
+    font-weight: 300;
+    color: $brand-darker-gray;
+    box-shadow: 0 em(-2, 30) 0 rgba(#000, .1);
+    border-radius: 3px;
+    border: 0;
+
+    @include desktop {
+        font-size: em(30);
+    }
+
+    &.input {
+        &--default {
+            background: $brand-lighter-gray;
+            box-shadow: 0 em(-2, 30) 0 rgba(#000, .10);
+        }
+
+        &--light {
+            background: #fff;
+        }
+    }
+
+    &:focus {
+        outline: 0;
+    }
+
+    &[type="file"] {
+        box-shadow: none;
+    }
+
+    &:disabled,
+    .disabled {
+        opacity: .5;
+        cursor: not-allowed;
+    }
+}
+
+.input {
+    $root: &;
+
+    &-group {
+        $group: &;
+        position: relative;
+
+        input {
+            padding-right: em(100);
+        }
+
+        &__addon {
+            display: none;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            right: 0;
+            left: 100%;
+            margin: auto;
+
+            &__loading {
+
+            }
+
+            .icon {
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                right: 0;
+                left: em(-80);
+                margin: auto;
+                height: em(38);
+                width: em(38);
+            }
+
+            &__text {
+                position: absolute;
+                background: #fff;
+                right: 0;
+                top: 0;
+                padding: em(20, 30) em(30, 30);
+                font-family: $font-family-default;
+                box-shadow: inset -2px -2px 1px -1px rgba(#000, .1);
+                font-size: em(30);
+                font-weight: 300;
+            }
+        }
+
+        &--pointer {
+            cursor: pointer;
+        }
+
+        &#{$root}--valid,
+        &#{$group}--addon,
+        &#{$root}--loading {
+            #{$group}__addon {
+                display: block;
+            }
+        }
+    }
+}

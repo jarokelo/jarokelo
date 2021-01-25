@@ -1,0 +1,16 @@
+.label {
+  display: inline-block;
+  margin-bottom: 5px;
+  padding: 5px;
+
+    &-status{
+        background: #777;
+        font-weight: normal;
+
+        @each $category in $badge-categories {
+            &--#{$category} {
+                background: map-get($badge-colors, $category);
+            }
+        }
+    }
+}

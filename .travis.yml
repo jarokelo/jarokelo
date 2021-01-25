@@ -1,0 +1,42 @@
+sudo: required
+
+language: php
+
+dist: xenial
+
+addons:
+  apt:
+    update: true
+
+env:
+  - DB_USERNAME=travis DB_PASSWORD= DB_DSN=mysql:host=127.0.0.1;dbname=yii2_basic_tests HOST=http://localhost:8080/index-test.php
+
+php:
+  - "7.0"
+
+# cache vendor dirs
+cache:
+  directories:
+    - $HOME/.composer/cache
+
+before_install:
+  - sudo rm -rf ~/.nvm
+  - curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
+  - sudo apt-get install -y nodejs mariadb-server mariadb-client
+  - sudo npm update -g npm
+  - node --version
+  - npm --version
+  - sudo mysql -e 'CREATE DATABASE yii2_basic_tests;'
+  - sudo mysql -e 'CREATE USER travis@localhost; GRANT ALL ON *.* TO travis@localhost;'
+
+install:
+  - travis_retry composer self-update && composer --version
+  - travis_retry composer global require "fxp/composer-asset-plugin:~1.2.0"
+  - export PATH="$HOME/.composer/vendor/bin:$PATH"
+  - travis_retry composer install --prefer-dist && php setup.php development "$USER"
+  - php testsetup.php "noreply@jarokelo.hu" "$TRAVIS_BUILD_DIR" "$HOST"
+  - cd tests && ./yii migrate --interactive=0
+  - cd .. && npm install
+
+script:
+  - node_modules/.bin/gulp ci

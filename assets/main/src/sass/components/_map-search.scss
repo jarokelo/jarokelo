@@ -1,0 +1,54 @@
+.map-search-help-text {
+  text-transform: none;
+}
+
+@media screen and (min-width: 800px) {
+  .map-search-help-text {
+    font-size: 1.25em;
+  }
+}
+
+.map-search-form-row {
+  margin-top: em(20);
+}
+
+.map-search-form-section {
+  font-size: em(19);
+}
+
+@media screen and (max-width: 500px) {
+  .map-search-form-section {
+    font-size: em(20);
+  }
+}
+
+.map-search-checkbox {
+  &__box {
+    padding: 0 0.9230769231em;
+  }
+
+  &__label {
+    text-transform: none;
+    font-size: 1.25em;
+    cursor: pointer;
+    font-weight: 300;
+    color: #444;
+  }
+}
+
+.reset-link {
+  padding-right: 0.7em;
+}
+
+.text-align-items--center {
+  align-items: center;
+}
+
+.margin-padding--zero {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.map-filter {
+  padding-bottom: 1.875em;
+}

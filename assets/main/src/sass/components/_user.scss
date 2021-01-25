@@ -1,0 +1,45 @@
+.user {
+    @include clearfix;
+
+    display: block;
+    padding: em(40) em(45);
+    background: $brand-light-gray;
+    transform: translateX(-100%);
+    transition: transform .3s ease-in-out;
+
+    @include desktop {
+        display: none;
+    }
+
+    &__data {
+
+    }
+
+    &__text {
+        margin: 0 0 em(35);
+    }
+
+    &__name {
+        display: block;
+        margin-top: em(25, 36);
+        font-size: em(36);
+        font-weight: 500;
+        color: $brand-darker-gray;
+    }
+
+    &__location {
+        font-size: em(24);
+        font-style: normal;
+        color: $brand-gray;
+    }
+
+    &__avatar {
+        margin: 0 auto;
+        width: em(140);
+        height: em(140);
+
+        img {
+            border-radius: 50%;
+        }
+    }
+}

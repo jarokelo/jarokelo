@@ -1,0 +1,66 @@
+.badge {
+    display: inline-block;
+    padding: em(8, 16) em(10, 16);
+    font-size: em(16);
+    color: #fff;
+    text-transform: uppercase;
+    border-radius: em(50, 16);
+
+    @include desktop {
+        padding: em(9, 10) em(15, 10);
+        font-size: em(10, $font-size-desktop);
+    }
+
+    @each $category in $badge-categories {
+        &--#{$category} {
+            background: map-get($badge-colors, $category);
+        }
+    }
+
+    &--comment {
+        position: relative;
+        min-width: em(45, 21);
+        padding: em(6, 21) em(10, 21) em(5, 21);
+        font-size: em(21);
+        color: $brand-darker-gray;
+        text-align: center;
+        background: #fff;
+
+        @include desktop {
+            font-size: em(14, $font-size-desktop);
+        }
+
+        &::before {
+            position: absolute;
+            right: em(20, 21);
+            bottom: em(-8);
+            border: solid transparent;
+            border-top-color: #fff;
+            border-right-color: #fff;
+            border-width: em(5, 21);
+            content: '';
+        }
+
+        &--top-right {
+            position: absolute;
+            top: em(16, 16);
+            right: em(14, 16);
+
+            @include desktop {
+                top: em(13, 14);
+                right: em(12, 14);
+            }
+        }
+    }
+
+    &--top-left {
+        position: absolute;
+        top: em(14, 16);
+        left: em(14, 16);
+
+        @include desktop {
+            top: em(12, 14);
+            left: em(12, 14);
+        }
+    }
+}

@@ -1,0 +1,95 @@
+// Media queries
+// ======================================================
+@mixin desktop() {
+    @include breakpoint($breakpoint-desktop) {
+        @content;
+    }
+}
+
+@mixin tablet() {
+    @include breakpoint($breakpoint-tablet) {
+        @content;
+    }
+}
+
+@mixin mobile() {
+    @include breakpoint($breakpoint-mobile) {
+        @content;
+    }
+}
+
+@mixin override($breakpoint) {
+    @include breakpoint($breakpoint) {
+        @content;
+    }
+}
+
+// Layout generator
+// ======================================================
+@mixin layout($column-count, $column-width, $gutter-size) {
+    @for $i from 1 through $column-count {
+        .col-#{$i} {
+            @if ($gutter-size > 0) {
+                margin-left: $gutter-size;
+            }
+
+            float: left;
+            width: col($i, $column-width, $gutter-size);
+
+            @if ($gutter-size > 0) {
+                &:first-child {
+                    margin-left: 0;
+                }
+            }
+        }
+    }
+
+    @if ($gutter-size > 0) {
+        .no--gutter {
+            margin-left: 0;
+        }
+    }
+
+    .col {
+        &--centered {
+            float: none;
+            margin-right: auto;
+            margin-left: auto;
+        }
+        &--first {
+            margin-left: 0;
+        }
+    }
+
+    .container {
+        max-width: col($column-count);
+        margin-right: auto;
+        margin-left: auto;
+    }
+}
+// Font face generator
+// ======================================================
+@mixin font-face($font-family: 'icon-font', $font-weight: 400, $font-style: 'normal', $font-filename: 'font', $font-path: '../fonts/') {
+    @font-face {
+        font-family: $font-family;
+        font-style: unquote($font-style);
+        font-weight: unquote($font-weight);
+        src: url('#{unquote($font-path)}#{$font-filename}.woff') format('woff'),
+        url('#{unquote($font-path)}#{$font-filename}.ttf') format('truetype'),
+        url('#{unquote($font-path)}#{$font-filename}.svg##{unquote($font-family)}') format('svg');
+    }
+}
+
+@mixin clearfix() {
+    &::after {
+        display: block;
+        clear: both;
+        content: ' ';
+    }
+}
+
+@mixin ie-only() {
+    @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+        @content;
+    }
+}

@@ -1,0 +1,23 @@
+# Rename this file to docker-compose.override.yml, and
+# compose will load it in addition to docker-compose.yml.
+# You can use this file to customize the exposed ports.
+version: '2'
+services:
+    web:
+        ports:
+            - 32080:80
+            - 32443:443
+    mailer:
+        ports:
+            - 32081:1080
+    db:
+        ports:
+            - 32306:3306
+    pma:
+        ports:
+            - 32082:80
+    logio:
+        ports:
+            - 32083:28778
+
+

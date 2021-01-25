@@ -1,0 +1,19 @@
+.apidoc {
+    ul {
+        &.toc {
+            margin: em(30) 0;
+        }
+        padding: em(10);
+        li {
+            a {
+                color: $brand-purple;
+                display: block;
+                &:hover {
+                    background: $brand-lighter-gray;
+                }
+                padding: em(5) em(10);
+                border-bottom: 1px solid $brand-light-gray;
+            }
+        }
+    }
+}

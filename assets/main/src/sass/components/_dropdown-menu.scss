@@ -1,0 +1,117 @@
+.dropdown {
+    position: relative;
+
+    &:hover &-content {
+        @include desktop {
+            display: block;
+        }
+    }
+
+    &-content {
+        display: none;
+
+        @include desktop {
+            @include clearfix;
+            position: absolute;
+            top: 100%;
+            right: em(-125, 18);
+            width: em(540, 18);
+            padding: em(35, 18) em(30, 18) em(10, 18) ;
+            background: $brand-green;
+        }
+    }
+
+    &-participate.active {
+        @include tablet {
+            display: block;
+            padding-left: 40px;
+            padding-right: 10px;
+        }
+    }
+
+    &__body {
+        @include desktop {
+            float: left;
+            width: em(265, 14);
+            margin-right: em(25, 14);
+            font-size: em(14, 18);
+            color: #fff;
+        }
+    }
+
+    &__title {
+        @include desktop {
+            display: block;
+        }
+    }
+
+    &__lead {
+        @include desktop {
+            font-weight: 300;
+        }
+    }
+
+    &__link {
+        @include desktop {
+            color: $brand-dark-blue;
+            font-weight: 300;
+        }
+    }
+
+    &-menu {
+        @include desktop {
+            float: left;
+            padding-left: em(30, 18);
+            border-left: em(1, 18) solid #fff;
+        }
+
+        .navigation__item {
+            @include desktop {
+                float: none;
+                margin-bottom: em(10, 14);
+                margin-left: 0;
+                white-space: nowrap;
+                font-size: em(14, 18);
+            }
+        }
+    }
+}
+
+.icon-container {
+    float: right;
+    padding-right: 10px;
+}
+
+@include tablet {
+    .navigation--active .navigation__item {
+        background-color: #fff;
+    }
+
+    .navigation--active {
+        overflow: auto;
+    }
+
+    .navigation__item .navigation__item-last {
+        border-bottom: none;
+    }
+
+    .icon-up {
+        display: none;
+    }
+
+    .icon-up.active {
+        display: block;
+    }
+
+    .icon-down.inactive {
+        display: none;
+    }
+
+    .icon-down {
+        display: block;
+    }
+
+    .dropdown-participate .dropdown-menu {
+        padding-right: 30px;
+    }
+}

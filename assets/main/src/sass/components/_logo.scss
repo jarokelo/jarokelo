@@ -1,0 +1,20 @@
+.logo {
+    padding: 0;
+    margin: 0;
+    font-size: em($font-size-base);
+
+    @include desktop {
+        font-size: em($font-size-desktop, $font-size-desktop);
+    }
+
+    &--default &__image {
+        width: em(196);
+        height: em(74);
+
+        @include desktop {
+            display: block;
+            width: em(144, $font-size-desktop);
+            height: em(54, $font-size-desktop);
+        }
+    }
+}

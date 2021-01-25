@@ -1,0 +1,156 @@
+@mixin navbar-variant($color, $hover, $active, $background, $border) {
+    background-color: $background;
+    border-color: $border;
+
+    .navbar-brand {
+        color: $color;
+        &:hover,
+        &:focus {
+        color: $color;
+        background-color: $hover;
+        }
+    }
+
+    .navbar-text {
+        color: $color;
+    }
+
+    .navbar-nav {
+        > li {
+            height: 50px;
+        }
+        > li > a {
+            color: $color;
+
+            &:hover,
+            &:focus {
+                color: $color;
+                background-color: $hover;
+            }
+        }
+        > .active > a {
+            color: $color;
+            background-color: $active;
+
+            &:hover,
+            &:focus {
+                color: $color;
+                background-color: $hover;
+            }
+        }
+        > .disabled > a {
+            &,
+            &:hover,
+            &:focus {
+                color: $color;
+                background-color: $hover;
+            }
+        }
+    }
+
+    // Darken the responsive nav toggle
+    .navbar-toggle {
+        border-color: $border;
+        &:hover,
+        &:focus {
+            background-color: $hover;
+        }
+        .icon-bar {
+            background-color: $color;
+        }
+    }
+
+    .navbar-collapse,
+    .navbar-form {
+        border-color: darken($background, 7%);
+    }
+
+    // Dropdowns
+    .navbar-nav {
+        > .open > a {
+            &,
+            &:hover,
+            &:focus {
+                color: $color;
+                background-color: $hover;
+            }
+        }
+
+        @media (max-width: 767px) {
+            // Dropdowns get custom display
+            .open .dropdown-menu {
+                > .dropdown-header {
+                    border-color: $border;
+                }
+                .divider {
+                    background-color: $border;
+                }
+                > li > a {
+                    color: $color;
+                    &:hover,
+                    &:focus {
+                        color: $color;
+                        background-color: $hover;
+                    }
+                }
+                > .active > a {
+                    color: $color;
+                    background-color: $active;
+
+                    &:hover,
+                    &:focus {
+                        color: $color;
+                        background-color: $hover;
+                    }
+                }
+                > .disabled > a {
+                    &,
+                    &:hover,
+                    &:focus {
+                        color: $color;
+                        background-color: $background;
+                    }
+                }
+            }
+        }
+    }
+
+    .navbar-link {
+        color: $color;
+        &:hover {
+            color: $color;
+        }
+    }
+
+    .btn-link {
+        color: $color;
+        &:hover,
+        &:focus {
+            color: $color;
+        }
+        &[disabled],
+        fieldset[disabled] & {
+            &:hover,
+            &:focus {
+                color: $color;
+            }
+        }
+    }
+
+    .dropdown-menu {
+        background: $background;
+
+        > li > a {
+            color: $color;
+
+            &:hover,
+            &:focus {
+                background-color: $hover;
+            }
+        }
+
+        > .active > a {
+            background-color: $active;
+        }
+    }
+}

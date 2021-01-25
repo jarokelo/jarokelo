@@ -1,0 +1,102 @@
+.list {
+    $root: &;
+
+    &--validate {
+        > li {
+            margin: em(6) 0;
+            padding: 0 0 0 em(40);
+
+            .icon {
+                display: none;
+            }
+        }
+
+        .validate--valid {
+            position: relative;
+
+            &:before {
+                content: '✔';
+                display: block;
+                position: absolute;
+                margin-left: em(-36);
+            }
+
+            .icon {
+                display: inline-block;
+            }
+        }
+    }
+
+    &--inline > li {
+        display: inline-block;
+        vertical-align: middle;
+    }
+
+    &--cards {
+        @include desktop {
+            @include clearfix;
+        }
+
+        > li {
+            margin-bottom: em(30);
+
+            @include desktop {
+                float: left;
+
+                &:nth-child(4n + 1) {
+                    margin-left: 0;
+                    clear: left;
+                }
+            }
+        }
+    }
+
+    &--comments {
+        margin: em(40) 0 em(30);
+        border-top: em(2) solid $brand-medium-gray;
+    }
+
+    &--horizontal {
+        @include clearfix;
+
+        > li {
+            float: left;
+        }
+    }
+
+    &--default {
+        font-weight: 600;
+
+        li {
+            margin-bottom: em(15, 15);
+            font-size: em(15);
+
+            @include desktop {
+                font-size: em(15, $font-size-desktop);
+            }
+        }
+    }
+
+    &--icons {
+        .list__icon {
+            fill: $brand-orange;
+        }
+    }
+
+    &--sponsors li {
+        @include desktop {
+            display: inline-block;
+            margin-bottom: em(45, $font-size-desktop);
+            vertical-align: middle;
+
+            + li {
+                margin-left: em(40, $font-size-desktop);
+            }
+
+            img {
+                height: em(36, $font-size-desktop);
+                width: auto;
+            }
+        }
+    }
+}

@@ -1,0 +1,92 @@
+.widget {
+    padding-bottom: em(100);
+
+    @include desktop {
+        padding-bottom: em(100, $font-size-desktop);
+    }
+
+    &__title {
+        font-weight: 500;
+        text-align: left;
+
+        @include desktop {
+            padding: em(25) 0 em(10) 0;
+            font-size: em(30, $font-size-desktop);
+        }
+    }
+
+    &__about {
+        text-align: left;
+
+        @include desktop {
+            padding: em(15) 0 em(25) 0;
+            border-bottom: em(1) solid $brand-light-gray;
+        }
+    }
+
+    &__content {
+        padding: em(40) 0;
+        text-align: left;
+    }
+
+    &__input {
+        box-shadow: none;
+        border: em(1) solid $brand-medium-gray;
+    }
+
+    &__preview {
+        margin-bottom: em(30);
+        height: 450px;
+        width: 100%;
+    }
+
+    &__copycode {
+        width:100%;
+        height:150px;
+        resize:vertical;
+    }
+
+    &__comment {
+        margin-bottom: em(10);
+        color: $brand-dark-gray;
+        font-style: italic;
+    }
+
+    &__body {
+        padding-top: 0;
+        background: $brand-lighter-gray;
+
+        .card {
+            margin: em(20) 0;
+        }
+    }
+
+    &__header {
+        padding: em(10) 0;
+        background: $brand-green;
+        text-align: center;
+    }
+
+    &__footer {
+        display: table;
+        padding: em(15);
+        width: 100%;
+        background: $brand-green;
+        font-size: em(22);
+        color: #fff;
+        text-transform: uppercase;
+    }
+
+    .select {
+        width: 100%;
+
+        select {
+            width: 100%;
+        }
+    }
+
+    textarea {
+        box-shadow: none;
+        border: em(1) solid $brand-medium-gray;
+    }
+}

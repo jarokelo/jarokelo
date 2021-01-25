@@ -1,0 +1,142 @@
+img {
+    width: 100%;
+}
+
+label {
+    font-weight: 500;
+}
+
+ul {
+    margin-bottom: 0;
+}
+
+.radio input[type="radio"] {
+    margin-top: 2px;
+}
+
+.wrap > .container {
+    @media (min-width: 768px) and (max-width: 1199px) {
+        padding: 110px 15px 20px !important;
+    }
+}
+
+.glyphicon {
+    margin-right: 10px;
+}
+
+.input-group-addon {
+    .glyphicon {
+        margin-right: 0px;
+    }
+}
+
+.site-breadcrumb {
+    font-size: 12px;
+}
+
+.radio {
+    display: inline;
+    margin-right: 20px;
+}
+
+.hint {
+    position: relative;
+    margin-top: 10px;
+    padding: 10px;
+    width: 40%;
+    background-color: $brand-medium-gray;
+    border-radius: 5px;
+    font-size: 12px;
+
+    &:before {
+        content: '';
+        position: absolute;
+        left: -10px;
+        top: 10px;
+        width: 0;
+        height: 0;
+        border-top: 10px solid transparent;
+        border-bottom: 10px solid transparent;
+        border-right: 10px solid $brand-medium-gray;
+    }
+
+    @media (max-width: 991px) {
+        width: auto;
+        background-color: inherit;
+        color: $brand-darker-gray;
+
+        &:before {
+            content: '';
+            position: absolute;
+            left: -10px;
+            top: 10px;
+            width: 0;
+            height: 0;
+            border-top: 0px solid transparent;
+            border-bottom: 00px solid transparent;
+            border-right: 0px solid $brand-medium-gray;
+        }
+    }
+}
+
+.status {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin: auto;
+}
+
+.nav-tabs {
+    border-bottom: none;
+}
+
+.tab-content {
+    padding: 10px;
+    border: 1px solid $brand-medium-gray;
+    border-radius: 5px;
+}
+
+.pt-7 {
+    padding-top: 7px;
+}
+
+.pt-13 {
+    padding-top: 13px;
+}
+
+.pt-17 {
+    padding-top: 17px;
+}
+
+.truncate {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.block--grey {
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: $brand-lighter-gray;
+    border: 1px solid $brand-medium-gray;
+    border-radius: 5px;
+}
+
+.pull-right {
+    @media (max-width: 992px) {
+        float: none !important;
+    }
+}
+
+.text-right {
+    @media (max-width: 992px) {
+        text-align: left;
+    }
+}
+
+.profile_picture {
+    width: 50px;
+    height: 50px;
+    border-radius: 100px;
+    background-color: $brand-light-gray;
+}

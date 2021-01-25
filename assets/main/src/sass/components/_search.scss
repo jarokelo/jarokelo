@@ -1,0 +1,108 @@
+.search {
+    padding: em(40) 0 em(60);
+
+    @include desktop {
+        padding: em(60) 0 em(120);
+    }
+
+    &__icon {
+        fill: $brand-gray;
+        width: em(120);
+        height: em(120);
+
+        @include desktop {
+            width: em(160);
+            height: em(160);
+        }
+    }
+
+    &__text {
+        color: $brand-gray;
+        font-size: em(40);
+        padding: em(10) 0;
+
+        @include desktop {
+            font-size: em(50);
+        }
+    }
+}
+
+.report-search {
+    position: relative;
+    padding: em(30);
+    margin-bottom: em(30);
+    font-size: em(18);
+    text-transform: uppercase;
+    background-color: $brand-medium-gray;
+    border-radius: em(8, $font-size-desktop);
+
+    @include desktop {
+        padding: em(30, $font-size-desktop);
+        margin-bottom: em(30, $font-size-desktop);
+        font-size: em(18, $font-size-desktop);
+    }
+
+    a {
+        position: absolute;
+        top: em(15);
+        right: em(20);
+        fill: $brand-darker-gray;
+
+        @include desktop {
+            top: em(15, $font-size-desktop);
+            right: em(20, $font-size-desktop);
+        }
+    }
+
+    .form__row {
+        @include desktop {
+            margin-bottom: 0;
+        }
+    }
+
+    input {
+        background-color: white;
+        border: none;
+        border-radius: em(4, $font-size-desktop);
+    }
+
+    .report-search-submit {
+        position: absolute;
+        top: em(105);
+        right: em(40);
+        border: none;
+        background: transparent;
+
+        @include desktop {
+            top: em(75, $font-size-desktop);
+            right: em(40, $font-size-desktop);
+        }
+
+        .icon {
+            fill: $brand-dark-blue;
+        }
+
+        &:hover {
+            cursor: pointer;
+        }
+
+        &:focus {
+            outline: none;
+        }
+    }
+
+    .col-4 {
+        margin-left: 0;
+
+        @include desktop {
+            padding: 0 em(20, $font-size-desktop);
+        }
+    }
+}
+
+.report-search-filter {
+    font-size: 16px;
+    .inline {
+        display: inline-block;
+    }
+}

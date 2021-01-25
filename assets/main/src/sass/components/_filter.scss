@@ -1,0 +1,86 @@
+.filter {
+    padding-top: em(30);
+    margin-bottom: em(50);
+    text-align: center;
+
+    @include desktop {
+        margin-bottom: em(25, $font-size-desktop);
+        text-align: left;
+    }
+
+    &--subpage {
+        margin-bottom: 0;
+        text-align: left;
+
+        @include desktop {
+            padding: em(40, $font-size-desktop) 0 0;
+            margin-bottom: em(30, $font-size-desktop);
+        }
+    }
+
+    &--separator {
+        border-bottom: em(1) solid rgba(#000, .5);
+    }
+
+    &__title {
+        margin-bottom: em(20, 30);
+        font-size: em(30);
+        font-weight: 300;
+
+        @include desktop {
+            display: inline-block;
+            margin: 0 em(10, 28) 0 0;
+            font-size: em(28, $font-size-desktop);
+            vertical-align: middle;
+        }
+
+        &--inline {
+            display: inline-block;
+            margin-bottom: 0;
+        }
+
+        &--before {
+            margin-right: em(15, 28);
+        }
+
+        &--after {
+            margin-left: em(15, 28);
+        }
+    }
+
+    &__links {
+        float: right;
+        margin-top: em(15);
+
+        li {
+            margin-left: em(45);
+        }
+    }
+
+    &__icons {
+        margin-top: em(10);
+
+        @include desktop {
+            float: right;
+            margin-top: em(10, $font-size-desktop);
+        }
+
+        li + li {
+            float: right;
+
+            @include desktop {
+                margin-left: em(30);
+            }
+        }
+    }
+
+    &__icon {
+        fill: $brand-gray;
+    }
+
+    .select {
+        @include desktop {
+            margin-top: em(2, 28);
+        }
+    }
+}

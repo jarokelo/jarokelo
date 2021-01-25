@@ -1,0 +1,153 @@
+.navigation {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: z(navigation);
+    width: 100%;
+    height: 100%;
+    padding-right: em(120);
+    background: rgba($brand-purple-blue, .9);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .3s ease-in-out;
+
+    @include mobile {
+        overflow: auto;
+    }
+
+    @include desktop {
+        position: static;
+        padding-top: em(13, $font-size-desktop);
+        padding-right: 0;
+        width: auto;
+        height: auto;
+        background: none;
+        opacity: 1;
+        pointer-events: auto;
+        transition: none;
+    }
+
+    &--active {
+        opacity: 1;
+        pointer-events: auto;
+
+        .navigation__list,
+        .user {
+            transform: translateX(0);
+        }
+    }
+
+    &__close {
+        position: absolute;
+        top: em(43);
+        right: em(37);
+
+        @include desktop {
+            display: none;
+        }
+
+        &__icon {
+            fill: #fff;
+            width: em(35);
+            height: em(35);
+        }
+    }
+
+    &__list {
+        height: 100%;
+        font-size: em(36);
+        background: #fff;
+        transform: translateX(-100%);
+        transition: transform .3s ease-in-out;
+
+        @include desktop {
+            @include clearfix;
+
+            height: auto;
+            font-size: em(18, $font-size-desktop);
+            background: none;
+            transform: none;
+            transition: none;
+        }
+    }
+
+    &__item {
+        border-bottom: em(2, 36) solid $brand-light-gray;
+
+        @include desktop {
+            float: left;
+            margin-left: em(25, 18);
+            border-bottom: 0;
+        }
+
+        &.hide {
+            &--last {
+                @media only screen and (min-width: #{$breakpoint-desktop}) and (max-width: #{$breakpoint-navigation-item-last}) {
+                    display: none;
+                }
+                &-1 {
+                    @media only screen and (min-width: #{$breakpoint-desktop}) and (max-width: #{$breakpoint-navigation-item-last-1}) {
+                        display: none;
+                    }
+                }
+            }
+        }
+
+        &.show {
+            &--last {
+                @media only screen and (min-width: #{$breakpoint-navigation-item-last}) {
+                    display: none;
+                }
+                &-1 {
+                    @media only screen and (min-width: #{$breakpoint-navigation-item-last-1}) {
+                        display: none;
+                    }
+                }
+            }
+        }
+    }
+
+    &__link {
+        position: relative;
+        display: block;
+        padding: em(35, 36) 0 em(35, 36) em(45, 36);
+        color: $brand-darker-gray;
+        font-weight: 300;
+
+        @include desktop {
+            display: inline-block;
+            padding: 0;
+            color: #fff;
+            font-weight: 500;
+        }
+
+        &::before {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 100%;
+            content: '';
+            border-left: em(10, 18) solid transparent;
+
+            @include desktop {
+                top: 100%;
+                height: auto;
+                border-bottom: em(3, 18) solid;
+                border-left: 0;
+                transition: width .3s ease;
+            }
+        }
+
+        &:hover::before,
+        &--active::before {
+            border-left-color: $brand-darker-gray;
+
+            @include desktop {
+                width: 100%;
+            }
+        }
+    }
+
+
+}

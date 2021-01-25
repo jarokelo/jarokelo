@@ -1,0 +1,75 @@
+.team {
+    &__member {
+        position: relative;
+        margin-bottom: em(40);
+        height: auto;
+        border: em(1) solid $brand-lighter-gray;
+        border-radius: em(2);
+
+        @include desktop {
+            margin-bottom: em(40, $font-size-desktop);
+            height: em(145, $font-size-desktop);
+            box-shadow: 0 em(2, $font-size-desktop) 0 0 rgba(0, 0, 0, 0.04);
+        }
+    }
+
+    &__media {
+        position: absolute;
+        float: left;
+        width: 30%;
+        height: 100%;
+
+        @include desktop {
+            width: em(180, $font-size-desktop);
+        }
+
+        img {
+            height: 100%;
+            width: 100%;
+            object-fit: cover;
+
+            @include desktop {
+                height: em(143, $font-size-desktop);
+                width: em(180, $font-size-desktop);
+            }
+        }
+    }
+
+    &__text {
+        float: left;
+        padding: em(20) em(20) em(20) 35%;
+
+        @include desktop {
+        }
+    }
+
+    &__name {
+        margin: 0;
+        font-size: em(28);
+        font-weight: 600;
+
+        @include desktop {
+            font-size: em(18, $font-size-desktop);
+        }
+    }
+
+    &__position {
+        margin: em(10, $font-size-desktop) 0 0;
+        font-size: em(22);
+        font-weight: 600;
+        text-transform: uppercase;
+
+        @include desktop {
+            font-size: em(12, $font-size-desktop);
+        }
+    }
+
+    &__about {
+        font-size: em(23);
+        font-weight: 600;
+
+        @include desktop {
+            font-size: em(13, $font-size-desktop);
+        }
+    }
+}

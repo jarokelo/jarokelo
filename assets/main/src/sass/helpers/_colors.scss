@@ -1,0 +1,67 @@
+// Colors
+// ======================================================
+$brand-gray: #a0a0a0;
+$brand-light-gray: #f0f0f0;
+$brand-lighter-gray: #f5f5f5;
+$brand-medium-gray: #ddd;
+$brand-dark-gray: #b6b6c7;
+$brand-darker-gray: #444;
+$brand-black: #000;
+
+$brand-green: #9bd158;
+$brand-dark-2-green: #87b54e;
+$brand-dark-green: #79a445;
+$brand-border-green: #6d963b;
+$brand-chart-green: #4fd9f8;
+
+$brand-light-blue: #74cce0;
+$brand-dark-blue: #5289c8;
+
+$brand-support-blue: #375ba9;
+
+$brand-purple-blue: #3f407c;
+
+$brand-light-purple: #7759d3;
+$brand-purple: #7d74e0;
+
+$brand-red: #ff5e5e;
+$brand-claret: #a92222;
+
+$brand-error: #d34545;
+
+$brand-orange: #ff925e;
+$brand-light-orange: #ef7940;
+$brand-hero-orange: #EFC136;
+
+$facebook-blue: #586fd1;
+$google-red: $brand-red;
+$twitter-blue: #6ac9f9;
+$paypal-blue: #009cde;
+
+$overlay: rgba(#214083, 0.95);
+
+// badge
+$badge-categories: (
+    new,
+    editing,
+    waiting-for-info,
+    waiting-for-answer,
+    waiting-for-response,
+    resolved,
+    unresolved,
+    deleted,
+    waiting-for-solution,
+    draft,
+);
+$badge-colors: (
+    new: #32f5cd,                               // Uj = 0
+    editing: #17c3c0,                           // Feldolgozas alatt = 1
+    waiting-for-info: #33ade9,                  // Kiegeszitesre var = 2
+    waiting-for-answer: #3d55cf,                // Valaszra var = 3
+    waiting-for-response: $brand-light-purple,  // Megerositesre var = 4
+    resolved: $brand-green,                     // Megoldott = 5
+    unresolved: $brand-red,                     // Megoldatlan = 6
+    deleted: $brand-claret,                     // Torolt = 7
+    waiting-for-solution: #f9bf33,              // Megoldasra var = 8
+    draft: $brand-orange                        // Vazlat = 9
+);

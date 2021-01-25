@@ -1,0 +1,164 @@
+#!/bin/sh
+
+die() { echo "$@" 1>&2 ; exit 1; }
+
+# Workaround for SourceTree on macOS
+if [ -x /usr/libexec/path_helper ]; then
+    __OLDPATH="$PATH"
+    eval `/usr/libexec/path_helper -s`
+    PATH="$__OLDPATH:$PATH"
+fi
+
+# git-sh-setup.sh workarounds
+unset CDPATH
+IFS="$(printf ' \t')"'
+'
+
+# cd to workdir
+cdup=$(git rev-parse --show-toplevel) &&
+cd "$cdup" || die "Cannot chdir to $cdup, the toplevel of the working tree"
+
+TMP="$GIT_DIR/.git-stash.$$"
+TMPindex=${GIT_INDEX_FILE-"$GIT_DIR/index"}.stash.$$
+trap 'rm -f "$TMP-"* "$TMPindex"' 0
+
+ref_stash=refs/stash
+
+# Workaround for git bug
+# http://permalink.gmane.org/gmane.comp.version-control.git/234153
+create_stash() {
+    stash_msg="$1"
+
+    if b_commit=$(git rev-parse --verify HEAD)
+    then
+        head=$(git rev-list --oneline -n 1 HEAD --)
+    else
+        die "You do not have the initial commit yet"
+    fi
+
+    if branch=$(git symbolic-ref -q HEAD)
+    then
+        branch=${branch#refs/heads/}
+    else
+        branch='(no branch)'
+    fi
+    msg=$(printf '%s: %s' "$branch" "$head")
+
+    i_tree=$(git write-tree) &&
+    i_commit=$(printf 'index on %s\n' "$msg" |
+        git commit-tree $i_tree -p $b_commit) ||
+        die "Cannot save the current index state"
+
+    w_tree=$( (
+        git read-tree --index-output="$TMPindex" -m $i_tree &&
+        GIT_INDEX_FILE="$TMPindex" &&
+        export GIT_INDEX_FILE &&
+        git diff --name-only -z $i_tree -- >"$TMP-stagenames" && #BUGFIX here: $i_tree instead of HEAD
+        git update-index -z --add --remove --stdin <"$TMP-stagenames" &&
+        git write-tree &&
+        rm -f "$TMPindex"
+    ) ) ||
+        die "Cannot save the current worktree state"
+
+    # create the stash
+    if test -z "$stash_msg"
+    then
+        stash_msg=$(printf 'WIP on %s' "$msg")
+    else
+        stash_msg=$(printf 'On %s: %s' "$branch" "$stash_msg")
+    fi
+    w_commit=$(printf '%s\n' "$stash_msg" |
+    git commit-tree $w_tree -p $b_commit -p $i_commit) ||
+    die "Cannot record working tree state"
+}
+
+store_stash() {
+    w_commit="$1"
+    stash_msg="$2"
+    if test -z "$stash_msg"
+    then
+        stash_msg="Created via \"git stash store\"."
+    fi
+
+    # Make sure the reflog for stash is kept.
+    : >>"$GIT_DIR/logs/$ref_stash"
+    git update-ref -m "$stash_msg" $ref_stash $w_commit
+    ret=$?
+    return $ret
+}
+
+fixed_stash() {
+    git update-index -q --refresh
+    if 	git diff-index --quiet --cached HEAD --ignore-submodules -- &&
+        git diff-files --quiet --ignore-submodules
+    then
+        return 1
+    fi
+
+    test -f "$GIT_DIR/logs/$ref_stash" ||
+        git stash clear || die "Cannot initialize stash"
+
+    stash_msg="$*"
+
+    create_stash "$stash_msg"
+    store_stash $w_commit "$stash_msg" ||
+    die "Cannot save the current status"
+
+    # delete files
+    git reset --hard -q
+    # restore index
+    if test -n $i_tree; then
+        git read-tree --reset -u $i_tree
+    fi
+
+    return 0
+}
+
+fixed_pop() {
+    if [ $stashed -eq 1 ]; then
+        trap '' INT
+        # prevent conflict between stashed index and restored index by reseting first
+        git reset --hard -q && git stash apply --index -q >/dev/null && git stash drop -q
+        stashed=0
+    fi
+}
+
+interrupt() {
+    trap '' INT
+    echo "Pre-commit check cancelled! Restoring files, please wait"
+    fixed_pop
+    echo "Done"
+    exit 130
+}
+
+#if git diff --cached --quiet; then
+#	exit 0
+#fi
+
+#initial commit, stash won't work
+if ! git rev-parse -q --verify HEAD >/dev/null; then
+    exit 0
+fi
+
+stashed=0
+#don't stash if in merge, would break things horribly
+if [ -f "$GIT_DIR/MERGE_HEAD" ] || [ -f "$GIT_DIR/CHERRY_PICK_HEAD" ]; then
+    echo "Not stashing in merge"
+else
+    trap '' INT
+    if fixed_stash; then
+        stashed=1
+        trap interrupt INT
+    fi
+fi
+
+node_modules/.bin/gulp commit
+exitcode=$?
+
+fixed_pop
+
+if [ $exitcode -ne 0 ]; then
+    echo "Pre-commit check failed! Use 'git commit --no-verify' to bypass."
+fi
+
+exit $exitcode

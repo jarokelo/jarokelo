@@ -1,0 +1,80 @@
+html {
+    height: 100%;
+    box-sizing: border-box;
+}
+
+body {
+    padding-top: em(120);
+    font-family: $font-stack-default;
+    font-size: $font-size-base;
+    font-weight: $font-weight-base;
+    line-height: $font-line-height-base;
+    color: $brand-darker-gray;
+    background: $brand-lighter-gray;
+
+    @include mobile {
+        font-size: 15px;
+    }
+
+    @include desktop {
+        padding-top: 0;
+        font-size: $font-size-desktop;
+    }
+}
+
+.body--navigation-opened {
+    overflow: hidden;
+}
+
+.body--light {
+    background: #fff;
+}
+
+// Scaffolding
+// ======================================================
+*,
+*:before,
+*:after {
+    box-sizing: inherit;
+}
+
+fieldset {
+    padding: 0;
+    margin: 0;
+    border: 0;
+}
+
+ol,
+ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+figure {
+    margin: 0;
+}
+
+strong {
+    font-weight: 700;
+}
+
+img {
+    display: block;
+    height: auto;
+    max-width: 100%;
+}
+
+a {
+    color: #fff;
+    text-decoration: none;
+}
+
+main {
+    overflow: hidden;
+}
+
+::selection {
+    color: #fff;
+    background: $brand-green;
+}

@@ -1,0 +1,60 @@
+.application-box {
+    color: #fff;
+    background: $brand-green;
+
+    .col-7 {
+        margin-left: 0;
+    }
+
+    .container {
+        position: relative;
+        padding-top: em(50);
+        padding-bottom: em(60);
+        overflow: hidden;
+
+        @include desktop {
+            padding-top: em(70, $font-size-desktop);
+            padding-bottom: em(100, $font-size-desktop);
+        }
+    }
+
+    &__media {
+        position: absolute;
+        bottom: 0;
+        right: -10%;
+        max-width: 50%;
+
+        @include tablet {
+            right: -20%;
+        }
+
+        @include desktop {
+            right: em(0);
+            bottom: em(-50, $font-size-desktop);
+            left: auto;
+        }
+    }
+
+    &__content {
+        margin-right: 30%;
+    }
+
+    &__lead {
+        margin: 0 0 em(40, 24);
+        font-size: em(24);
+
+        @include desktop {
+            margin-bottom: em(40, 22);
+            font-size: em(22, $font-size-desktop);
+        }
+    }
+
+    &__icon {
+        margin-bottom: em(20);
+        font-size: em($font-size-base, 24);
+
+        @include desktop {
+            margin-right: em(40, $font-size-desktop);
+        }
+    }
+}

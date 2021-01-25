@@ -1,0 +1,248 @@
+.profile {
+    .container {
+        padding:0;
+
+        @include desktop {
+            padding-right: em(45);
+            padding-left: em(45);
+        }
+
+        &.profile__container {
+            @include desktop {
+                padding-right: em(45);
+                padding-left: 0;
+            }
+        }
+    }
+
+    &__ul {
+        margin: em(10) 0 em(30);
+        padding: 0 0 0 em(40);
+        list-style: inherit;
+    }
+
+    &__top {
+        background: $brand-dark-2-green;
+        color: #fff;
+    }
+
+    &__topcontainer {
+        display:table;
+        width:100%;
+        padding: em(20) 0 em(25) 0;
+
+        @include desktop {
+            padding: em(10, $font-size-desktop) 0 em(25, $font-size-desktop) 0;
+        }
+    }
+
+    &__topitem {
+        position: relative;
+        display:table-cell;
+        width: 50%;
+        font-size: em(26);
+        vertical-align: bottom;
+        text-align: center;
+
+        @include desktop {
+            width: 20%;
+            font-size: em(18 , $font-size-desktop);
+        }
+
+        .number {
+            font-size: em(80);
+
+            @include desktop {
+                margin-top: em(-5);
+                height: em(30);
+                font-size: em(60, $font-size-desktop);
+            }
+        }
+
+        .topitem__border {
+            position: absolute;
+            right: 0;
+            top: em(50);
+            width: em(1);
+            height: em(90);
+            background: $brand-border-green;
+        }
+
+        .uppercase {
+            font-size: em(24);
+            text-transform: uppercase;
+
+            @include desktop {
+                font-size: em(12, $font-size-desktop);
+            }
+        }
+    }
+
+    &__avatar {
+        display: inline-block;
+        position:relative;
+        float: none;
+        width: em(100);
+        height: em(100);
+        border-radius: 50%;
+
+        @include desktop {
+            flex: 0 0 em(100);
+            display: flex;
+            align-items: center;
+            width: em(70, $font-size-desktop);
+            height: em(70, $font-size-desktop);
+        }
+
+        img {
+            width: 100%;
+            border-radius: 50%;
+        }
+    }
+
+    &__user {
+        padding: em(25);
+        background: $brand-dark-green;
+        text-align: center;
+
+        @include desktop {
+            display: flex;
+            align-items: center;
+            padding: em(45, $font-size-desktop) em(10, $font-size-desktop);
+            text-align: left;
+        }
+    }
+
+    &__userinfo {
+        @include desktop {
+            padding-left: em(20);
+            flex: 1 1 auto;
+        }
+
+        h2 {
+            margin: 0;
+            font-size: em(46);
+            font-weight: 500;
+
+            @include desktop {
+                font-size: em(21, $font-size-desktop);
+            }
+        }
+
+        p {
+            margin: 0;
+            font-size: em(26);
+
+            @include desktop {
+                font-size: em(18, $font-size-desktop);
+            }
+        }
+    }
+
+    &__toplinks {
+        background: #fff;
+        font-size: em(36);
+
+        @include desktop {
+            padding: em(40) 0 0;
+            background: $brand-dark-2-green;
+            font-size: em(18, $font-size-desktop);
+        }
+
+        a {
+            text-decoration: underline;
+            color: $brand-darker-gray;
+            @include desktop {
+                color: #fff;
+            }
+        }
+
+        li {
+            padding: em(20);
+            border-bottom: em(1) solid $brand-light-gray;
+
+            @include desktop {
+                padding: 0;
+                border-bottom: none;
+            }
+
+            &:last-child {
+                @include desktop {
+                    margin-top: em(20);
+                }
+            }
+
+            &.active {
+                font-weight:bold;
+            }
+        }
+    }
+
+    &__title {
+        font-size: em(32, $font-size-desktop);
+        font-weight: 500;
+    }
+
+    &__formgroup {
+        padding-bottom: em(40);
+        margin-bottom: em(40);
+        border-bottom: em(1) solid $brand-light-gray;
+
+        @include desktop {
+            padding-bottom: em(40, $font-size-desktop);
+        }
+
+        .select {
+            width: 100%;
+
+            select {
+                width: 100%;
+            }
+        }
+    }
+
+    &__formrow {
+        margin: em(20) 0;
+
+        .modal-radio {
+            .radio {
+                margin-right: em(30);
+            }
+        }
+    }
+
+    &__hint {
+        margin-top: 0;
+        color: $brand-gray;
+
+        & + .help-block {
+            margin-top: em(30);
+        }
+    }
+
+    .report-search-filter {
+        padding-bottom: em(30);
+        border-bottom: em(1) solid $brand-lighter-gray;
+
+        .form__row {
+            display: inline-block;
+        }
+    }
+}
+
+.au-upload-button {
+    input[type="file"] {
+        display: none;
+    }
+}
+
+.upload__button {
+    display: inline-block;
+    margin-top: em(20, $font-size-desktop);
+}
+
+.preview {
+    img {
+        border-radius: 50%;
+    }
+}

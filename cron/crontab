@@ -1,0 +1,3 @@
+# cron jobs run in /var/www/app, with the same environment variables as apache
+
+#* * * * * ./yii cron

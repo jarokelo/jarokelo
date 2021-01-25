@@ -1,0 +1,33 @@
+.glyphicon-search {
+    margin-right: 0;
+}
+
+.quick-search-button {
+    background-color: white;
+    padding: 10px 15px;
+    border: none;
+    border-top: 1px solid $brand-darker-gray;
+
+    &:hover {
+        background-color: $brand-lighter-gray;
+    }
+}
+
+.quick-search-row {
+    font-size: 12px;
+    padding: 10px 5px;
+
+    &:hover {
+        background-color: $brand-lighter-gray;
+        cursor: pointer;
+    }
+
+    .label {
+        margin: 0;
+    }
+}
+
+.quick-search-empty {
+    text-align: center;
+    padding-top: 10px;
+}

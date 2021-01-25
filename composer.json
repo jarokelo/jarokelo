@@ -1,0 +1,96 @@
+{
+    "name": "jarokelo/yii2-app-basic",
+    "description": "Yii 2 Basic Application Template",
+    "keywords": ["yii2", "framework", "basic", "application template"],
+    "homepage": "http://www.yiiframework.com/",
+    "type": "project",
+    "license": "BSD-3-Clause",
+    "support": {
+        "issues": "https://github.com/yiisoft/yii2/issues?state=open",
+        "forum": "http://www.yiiframework.com/forum/",
+        "wiki": "http://www.yiiframework.com/wiki/",
+        "irc": "irc://irc.freenode.net/yii",
+        "source": "https://github.com/yiisoft/yii2"
+    },
+    "minimum-stability": "stable",
+    "require": {
+        "php": ">=5.4.0",
+        "yiisoft/yii2": "2.0.10",
+        "yiisoft/yii2-bootstrap": "~2.0.0",
+        "yiisoft/yii2-swiftmailer": "~2.0.0",
+        "kartik-v/yii2-widget-select2": "~2.0.0",
+        "yiisoft/yii2-authclient": "2.0.*",
+        "kartik-v/yii2-widget-datepicker": "1.4.*",
+        "bower-asset/darkroom": "2.0.*",
+        "ddeboer/imap": "^1.5.5",
+        "ext-gd": "*",
+        "ext-exif": "*",
+        "cboden/ratchet": "0.3.*",
+        "bower-asset/normalize-css": "^4.1",
+        "bower-asset/breakpoint-sass": "^2.7",
+        "bower-asset/flexboxgrid": "6.2.*",
+        "bower-asset/cookieconsent2": "^1.0",
+        "himiklab/yii2-recaptcha-widget": "1.0.5",
+        "bower-asset/dropzone": "4.3.*",
+        "zendframework/zend-feed": "2.3.*",
+        "zendframework/zend-servicemanager": "2.3.*",
+        "zendframework/zend-http": "2.3.*",
+        "nkovacs/jquery-pjax": "2.0.*",
+        "bower-asset/autosize": "^3.0.16",
+        "2amigos/yii2-chartjs-widget": "~2.0",
+        "bower-asset/svg4everybody": "^2.1",
+        "bower-asset/lightgallery": "1.2.*",
+        "bower-asset/keyboardjs": "^2.2.1",
+        "kartik-v/yii2-mpdf": "1.0.*",
+        "yurkinx/yii2-image": "^1.1",
+        "kartik-v/yii2-export": "1.2.5",
+        "components/highlightjs": "^9.5",
+        "bower-asset/owl.carousel": "2.3.4",
+        "bower-asset/owl.carousel2.thumbs": "0.1.8",
+        "bower-asset/flex.css": "1.0.9",
+        "bower-asset/malihu-custom-scrollbar-plugin": "3.1.5",
+        "2amigos/yii2-ckeditor-widget": "^2.1",
+        "google/apiclient": "^2.0",
+        "php-mime-mail-parser/php-mime-mail-parser": "^3.0",
+        "aws/aws-sdk-php": "^3.135",
+        "kartik-v/yii2-widget-colorinput": "*"
+    },
+    "require-dev": {
+        "yiisoft/yii2-codeception": "~2.0",
+        "yiisoft/yii2-debug": "~2.0.0",
+        "yiisoft/yii2-gii": "~2.0.0",
+        "squizlabs/php_codesniffer": "2.*",
+        "yiisoft/yii2-faker": "~2.0.0",
+        "yiisoft/yii2-coding-standards": "~2.0",
+        "codeception/base": "^2.2.3",
+        "codeception/specify": "~0.4.3",
+        "codeception/verify": "~0.3.1",
+        "bower-asset/mocha": "~2.1",
+        "bower-asset/chai": "~1.10",
+        "bower-asset/sinon-chai": "~2.6",
+        "deployer/deployer": "3.3.*",
+        "facebook/webdriver": "^1.1"
+    },
+    "config": {
+        "process-timeout": 1800
+    },
+    "scripts": {
+        "post-create-project-cmd": [
+            "yii\\composer\\Installer::postCreateProject"
+        ]
+    },
+    "extra": {
+        "yii\\composer\\Installer::postCreateProject": {
+            "setPermission": [
+                {
+                    "yii": "0755"
+                }
+            ]
+        },
+        "asset-installer-paths": {
+            "npm-asset-library": "vendor/npm",
+            "bower-asset-library": "vendor/bower"
+        },
+        "asset-pattern-skip-version": "(-build|-patch)"
+    }
+}

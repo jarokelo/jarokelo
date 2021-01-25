@@ -1,0 +1,39 @@
+<?php
+/**
+ *
+ * Make a copy of this file before the first deploy to the right `@app/config/{ENV}/` folder
+ *
+ * Do not paste passwords into this example file!
+ *
+ **/
+return [
+    'components' => [
+        'authClientCollection' => [
+            'clients' => [
+                'facebook' => [
+                    'clientId' => '',
+                    'clientSecret' => '',
+                ],
+                'google' => [
+                    'clientSecret' => '',
+                ],
+            ],
+        ],
+        'db' => [
+            'username' => '',
+            'password' => '',
+        ],
+        'sentry' => [
+            'dsn' => '',
+        ],
+    ],
+    'params' => [
+        'google' => [
+            'api_key_http' => '',
+            'api_key_server' => '',
+        ],
+        'reCaptcha' => [
+            'secret' => '',
+        ],
+    ],
+];

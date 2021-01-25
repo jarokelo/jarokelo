@@ -1,0 +1,11 @@
+<?php
+
+return [
+    'components' => [
+        'mailer' => [
+            'as dryrun' => [
+                'email' => 'dryrun@example.org',
+            ],
+        ],
+    ],
+];

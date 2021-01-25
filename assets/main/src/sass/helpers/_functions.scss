@@ -1,0 +1,84 @@
+// Calculat em size
+//
+// @function em
+// @param $size {Number} wanted font size
+// @param $base {Number} parent font size
+// @usage:
+// em(14, 20)
+//
+// @return {String} em sized size
+@function em($size, $base: $font-size-base) {
+    @return (strip-units($size) / strip-units($base)) * 1em;
+}
+
+// Get z-index
+//
+// @function z
+// @param $key {String} z-index key
+// @usage:
+// z(header)
+//
+// @return {Number} z-index value
+@function z($key) {
+    @return map-get($z-index, $key);
+}
+
+// Get icon by key
+//
+// @function icon
+// @param $key {String} icon key
+// @usage:
+// icon(facebook)
+//
+// @return {String} icon unicode
+@function icon($key) {
+    @return map-get($icons, $key);
+}
+
+// Strip unit
+//
+// @function strip-units
+// @param $number {String} value with unit
+// @usage:
+// strip-units(13px)
+//
+// @return {Number} Unitless number
+@function strip-units($number) {
+    @return $number / ($number * 0 + 1);
+}
+
+// To pixel
+//
+// @function to-pixel
+// @param $number {String|Number} value
+// @usage
+// to-pixel(13)
+//
+// @return {String} Number with pixel unit
+@function to-pixel($number) {
+    @return strip-units($number) * 1px;
+}
+
+// To percentage
+//
+// @function to-percentage
+// @param $number {String|Number} value
+// @usage
+// to-percentage(13)
+//
+// @return {String} Number with percentage unit
+@function to-percentage($number) {
+    @return strip-units($number) * 1%;
+}
+
+// Generate grid column
+//
+// @function col
+// @param $size {Number} Grid column size
+// @usage
+// col(2)
+//
+// @return {String} Grid column width
+@function col($size, $column-width: $grid-column-width, $gutter: $grid-gutter) {
+    @return $size * $column-width + ($size - 1) * $gutter;
+}

@@ -1,0 +1,64 @@
+#!/usr/bin/env php
+<?php
+
+$rootPassword = getEnv('DB_ROOT_PASSWORD');
+if ($rootPassword === false) {
+    echo "DB_ROOT_PASSWORD not set!";
+    echo "\n";
+    exit(1);
+}
+$testdsn = getEnv('TEST_DB_DSN');
+if ($testdsn === false) {
+    echo "TEST_DB_DSN not set!";
+    echo "\n";
+    exit(1);
+}
+$user = getEnv('DB_USERNAME');
+if ($user === false) {
+    echo "DB_USERNAME not set!";
+    echo "\n";
+    exit(1);
+}
+
+$dsn = preg_replace('/;?dbname=[^;]+/', '', $testdsn);
+
+$matchCount = preg_match('/dbname=([^;]+)/', $testdsn, $matches);
+if ($matchCount !== 1) {
+    echo "could not get database name from TEST_DB_DSN!";
+    echo "\n";
+    exit(1);
+}
+$dbname = $matches[1];
+$escapedDbName = '`' . str_replace('`', '``', $dbname) . '`';
+
+$pdo = new PDO($dsn, 'root', $rootPassword);
+
+$options = getopt('', [
+    'recreate',
+]);
+
+if (isset($options['recreate'])) {
+    $st = $pdo->prepare('DROP DATABASE IF EXISTS ' . $escapedDbName);
+    if (!$st->execute()) {
+        echo "Failed to drop database!";
+        echo "\n";
+        print_r($st->errorInfo());
+        exit(1);
+    }
+}
+
+$st = $pdo->prepare('CREATE DATABASE IF NOT EXISTS ' . $escapedDbName . ' CHARACTER SET utf8 COLLATE utf8_unicode_ci');
+if (!$st->execute()) {
+    echo "Failed to create database!";
+    echo "\n";
+    print_r($st->errorInfo());
+    exit(1);
+}
+
+$st = $pdo->prepare('GRANT ALL PRIVILEGES ON ' . $escapedDbName . ".* TO ?@'%';");
+if (!$st->execute([$user])) {
+    echo "Failed to grant privileges!";
+    echo "\n";
+    print_r($st->errorInfo());
+    exit(1);
+}

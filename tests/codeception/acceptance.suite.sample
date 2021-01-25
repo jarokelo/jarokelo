@@ -1,0 +1,10 @@
+modules:
+    config:
+#        PhpBrowser:
+#            url: http://localhost:8080
+        WebDriver:
+            url: http://localhost:8080
+            host: '192.168.88.24'  # selenium
+            port: '4444'           # selenium
+            browser: 'phantomjs'
+            window_size: 1024x768

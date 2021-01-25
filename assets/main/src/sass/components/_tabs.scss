@@ -1,0 +1,35 @@
+.tabs {
+
+    &__header {
+        display: flex;
+
+        &__item {
+            flex: 1;
+        }
+
+        &__link {
+            display: block;
+            padding: em(18, 24) 0;
+            font-size: em(24);
+            color: $brand-darker-gray;
+            text-align: center;
+            background: #fff;
+
+            &--active {
+                background: $brand-light-gray;
+            }
+        }
+
+        &__count {
+            color: $brand-light-purple;
+        }
+    }
+
+    &__content {
+        display: none;
+
+        &--active {
+            display: block;
+        }
+    }
+}

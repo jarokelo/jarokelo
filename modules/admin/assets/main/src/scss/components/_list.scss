@@ -1,0 +1,57 @@
+.list {
+    $root: &;
+
+    &--validate {
+        > li {
+            margin: em(6) 0;
+            padding: 0 0 0 em(40);
+            list-style:none;
+
+            .icon {
+                display: none;
+            }
+        }
+
+        .validate--valid {
+            position: relative;
+
+            &:before {
+                content: '✔';
+                display: block;
+                position: absolute;
+                margin-left: -20px;
+            }
+
+            .icon {
+                display: inline-block;
+            }
+        }
+    }
+
+    &--inline > li {
+        display: inline-block;
+        vertical-align: middle;
+    }
+
+    &--cards {
+        > li {
+            margin-bottom: em(30);
+
+                float: left;
+
+                &:nth-child(4n + 1) {
+                    margin-left: 0;
+                    clear: left;
+                }
+        }
+    }
+
+    &--default {
+        font-weight: 600;
+
+        li {
+            margin-bottom: em(15, 15);
+            font-size: em(15);
+        }
+    }
+}

@@ -1,0 +1,43 @@
+.panel {
+    font-size: em(30);
+    margin-bottom: em(40);
+
+    &__body {
+        padding: em(53);
+    }
+
+    p {
+        &:first-child {
+            margin-top: 0;
+        }
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
+
+    br {
+        & + p {
+            margin-top: 0;
+        }
+    }
+
+    &--info {
+        .panel__body {
+            background: $brand-light-gray;
+            border-radius: em(8);
+        }
+    }
+
+    &--label-offset {
+        @include desktop {
+            padding-top: em(46);
+        }
+    }
+
+    &--title-offset {
+        @include desktop {
+            margin-top: em(72);
+        }
+    }
+}

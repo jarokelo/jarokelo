@@ -1,0 +1,108 @@
+.header {
+    @include clearfix;
+
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: z(header);
+    height: em(120);
+    padding: em(25) 0;
+    background: $brand-green;
+
+    @include desktop {
+        position: relative;
+        height: auto;
+        padding: em(15, $font-size-desktop) 0;
+    }
+
+    .logo {
+        position: absolute;
+        right: 0;
+        left: 0;
+        text-align: center;
+
+        @include desktop {
+            position: static;
+            float: left;
+        }
+    }
+
+    &__user-menu {
+        @include desktop {
+            position: relative;
+            float: right;
+            z-index: z(header-user-menu);
+        }
+
+        &__navigation-icon {
+            position: relative;
+            z-index: z(navigation-menu-icon);
+            float: left;
+            margin-top: em(14);
+
+            .icon {
+                width: em(52);
+                height: em(39);
+                stroke: #fff;
+            }
+
+            @include desktop {
+                display: none;
+            }
+        }
+
+        &__menu-icon {
+            position: relative;
+            float: right;
+            margin-top: em(5);
+            z-index: 10;
+
+            @include desktop {
+                display: none;
+            }
+
+            .icon {
+                width: em(60);
+                height: em(60);
+                fill: #fff;
+            }
+
+            img {
+                height: em(70);
+                border-radius: 50%;
+            }
+        }
+
+        &__list {
+            display: none;
+
+            @include desktop {
+                display: block;
+                margin-top: em(12, $font-size-desktop);
+            }
+        }
+
+        &__item {
+            display: inline-block;
+            margin-left: em(20, 18);
+            vertical-align: middle;
+        }
+
+        &__link {
+            font-size: em(18, $font-size-desktop);
+            color: #fff;
+
+            &--button {
+                padding: em(15, 18);
+                border: em(2, 18) solid;
+                border-radius: em(50, 18);
+                transition: background .3s;
+
+                &:hover {
+                    background: rgba(#fff, .3);
+                }
+            }
+        }
+    }
+}

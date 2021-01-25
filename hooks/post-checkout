@@ -1,0 +1,19 @@
+#!/bin/sh
+
+# Hook to update composer and npm after checkout
+
+PREV_COMMIT=$1
+POST_COMMIT=$2
+
+NOCOLOR='\033[0m'
+REDCOLOR='\033[37;41m'
+
+changed_files="$(git diff-tree -r --name-only --no-commit-id $PREV_COMMIT $POST_COMMIT)"
+
+check_run() {
+    echo "$changed_files" | grep --quiet "$1" && eval "$2" || :
+}
+
+check_run package.json 'printf "$REDCOLOR%s$NOCOLOR\n" "package.json has changed. You should run npm install && npm prune"'
+check_run npm-shrinkwrap.json 'printf "$REDCOLOR%s$NOCOLOR\n" "npm-shrinkwrap.json has changed. You should run npm install && npm prune"'
+check_run composer.lock 'printf "$REDCOLOR%s$NOCOLOR\n" "composer.lock has changed. You should run composer install --prefer-dist"'

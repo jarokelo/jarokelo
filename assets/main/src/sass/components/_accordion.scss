@@ -1,0 +1,129 @@
+.accordion {
+    $root: &;
+    position: relative;
+
+    &__title {
+        $title: &;
+        position: relative;
+        cursor: pointer;
+        padding: em(30) 0;
+        border-top: 1px solid $brand-medium-gray;
+
+        &__icon {
+            display: inline-block;
+            vertical-align: middle;
+            margin: 0 em(20) 0 em(30);
+            height: em(36);
+            width: em(36);
+        }
+
+        &__dd {
+            display: inline-block;
+            vertical-align: middle;
+            position: absolute;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            margin: auto em(30);
+            height: em(24);
+            width: em(24);
+
+            #{$title}--active & {
+                display: none;
+            }
+
+            &--active {
+                display: none;
+
+                #{$title}--active & {
+                    display: inline-block;
+                }
+            }
+        }
+
+        &__text {
+            display: inline-block;
+            vertical-align: middle;
+            margin: 0;
+        }
+
+        &--active {
+            @include tablet {
+                background: $brand-light-gray;
+            }
+        }
+    }
+
+    &__media {
+        //max-height: em(300);
+        overflow: hidden;
+
+        @include desktop {
+            margin: em(20) 0;
+        }
+
+        img {
+            max-width: 100%;
+            width: 100%;
+            margin: auto;
+        }
+    }
+
+    &__content {
+        display: none;
+
+        @include tablet {
+            background: $brand-light-gray;
+            padding-bottom: em(20);
+            text-align: center;
+
+            p,h1,h2,h3,h4,h5,h6 {
+                padding: 0 em(60);
+            }
+        }
+
+        &--active {
+            display: block;
+        }
+
+        &__link {
+            @include tablet {
+                margin-top: em(20);
+                display: block;
+            }
+        }
+    }
+
+    &--mobile {
+
+        #{$root}__title {
+
+        }
+
+        #{$root}__media {
+
+        }
+
+        #{$root}__content {
+            display: none;
+
+            &--active {
+                display: block;
+            }
+        }
+
+        @include desktop {
+            #{$root}__title {
+                display: none;
+            }
+
+            #{$root}__media {
+
+            }
+
+            #{$root}__content {
+                display: block;
+            }
+        }
+    }
+}

@@ -1,0 +1,112 @@
+.footer {
+    padding: em(70) 0;
+    color: #fff;
+    text-align: center;
+    background: $brand-darker-gray;
+
+    @include desktop {
+        padding: em(80, $font-size-desktop) 0 em(30, $font-size-desktop);
+        text-align: left;
+    }
+
+    &__copyright {
+        display: block;
+        font-size: em(24);
+    }
+
+    &__container {
+        @include desktop {
+            display: flex;
+        }
+    }
+
+    &__list__item {
+        & + & {
+            margin-left: em(40);
+        }
+    }
+
+    &__social-list {
+        margin-top: em(40);
+        margin-bottom: em(90);
+
+        @include desktop {
+            margin-bottom: 0;
+        }
+
+        &__item {
+            display: inline-block;
+            vertical-align: middle;
+
+            @include desktop {
+                display: block;
+            }
+
+            & + & {
+                margin-left: em(50);
+
+                @include desktop {
+                    margin-top: em(20, $font-size-desktop);
+                    margin-left: 0;
+                }
+            }
+        }
+
+        &__icon {
+            width: em(50);
+            height: em(50);
+
+            @include desktop {
+                width: em(20, $font-size-desktop);
+                height: em(20, $font-size-desktop);
+                margin-right: em(20, $font-size-desktop);
+            }
+        }
+
+        &__title {
+            display: none;
+
+            @include desktop {
+                display: inline;
+            }
+        }
+    }
+
+    &__box {
+
+        &--horizontal {
+            @include desktop {
+                border-right: em(1) solid $brand-gray;
+
+                &:last-child {
+                    border-right: 0;
+                }
+            }
+        }
+
+        &--vertical {
+            padding-top: em(30);
+            margin-top: em(40);
+            border-top: em(1) solid $brand-gray;
+        }
+
+        &__title {
+            display: none;
+
+            @include desktop {
+                display: block;
+                margin: 0 0 em(30, 20);
+                font-size: em(20, $font-size-desktop);
+                font-weight: 500;
+            }
+        }
+
+        &__lead {
+            @include desktop {
+                margin: 0 0 em(20, 16);
+                font-size: em(16, $font-size-desktop);
+                font-weight: 300;
+            }
+        }
+    }
+}

@@ -1,0 +1,204 @@
+.hero {
+    position: relative;
+    padding: em(45) 0 em(60);
+    color: #fff;
+    text-align: center;
+    background-position: 50% 0;
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    @include desktop {
+        padding-top: em(40, $font-size-desktop);
+        padding-bottom: em(55, $font-size-desktop);
+    }
+
+    &--fixed {
+        @include desktop {
+            min-height: em(335, $font-size-desktop);
+
+            @include ie-only {
+                height: em(335, $font-size-desktop);
+            }
+        }
+    }
+
+    &--default {
+        background-image: url(#{$path-images}hero-illustration.jpg);
+    }
+
+    &--bottom {
+        background-image: url(#{$path-images}hero-bottom-illustration.jpg);
+    }
+
+    &--volunteer {
+        background-image: url(#{$path-images}hero-rolunk-csatlakozz.png);
+    }
+
+    &--404 {
+        background-image: url(#{$path-images}hero-404.png);
+    }
+
+    &--support {
+        background-image: url(#{$path-images}hero-rolunk-tamogasd.png);
+    }
+
+    &--how {
+        background-image: url(#{$path-images}hero-rolunk-hogyan.png);
+    }
+
+    &--application {
+        background-image: url(#{$path-images}hero-rolunk-alkalmazas.png);
+    }
+
+    &--bureau {
+        background-image: url(#{$path-images}hero-bureau.png);
+    }
+
+    &--statistics {
+        background-image: url(#{$path-images}hero-statistics.png);
+    }
+
+    &--team {
+        background-image: url(#{$path-images}hero-team.png);
+    }
+
+    &--contact {
+        background-image: url(#{$path-images}hero-contact--mobile.png);
+
+        @include desktop {
+            background-image: url(#{$path-images}hero-contact.png);
+        }
+    }
+
+    &--mylastreports {
+        background-image: url(#{$path-images}myreports-bg.png);
+        color: $brand-darker-gray;
+        text-align: left;
+
+        @include desktop {
+            padding-bottom: em(40, $font-size-desktop);
+        }
+    }
+
+    &__background {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: -1;
+        background-position: 50% 50%;
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+
+    &__title {
+        text-transform: uppercase;
+
+        &--mylastreports {
+            margin-top: 0;
+            font-size: em(32, $font-size-desktop);
+            text-transform: none;
+            font-weight: 500;
+        }
+    }
+
+    &__lead {
+        margin-top: 0;
+        margin-bottom: em(45, 30);
+        font-size: em(30);
+        font-weight: 300;
+
+        @include desktop {
+            margin-bottom: em(25, 21);
+            font-size: em(21, $font-size-desktop);
+        }
+
+        &--padding {
+            padding: em(14) 0;
+        }
+    }
+
+    &__button {
+        margin-bottom: em(20);
+
+        @include desktop {
+            margin-bottom: em(15, $font-size-desktop);
+        }
+    }
+
+    &__link {
+        position: relative;
+        display: inline-block;
+        padding: 0 em(10) em(3);
+
+        &::before {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            left: 0;
+            border-bottom: em(1) dashed;
+            content: '';
+            transition: border-color .3s ease-in-out;
+        }
+
+        &:hover::before {
+            border-bottom-color: rgba(#fff, 0);
+        }
+    }
+
+    &__links {
+        float: right;
+        margin-top: em(15);
+
+        li {
+            margin-left: em(45);
+        }
+    }
+
+    &__dual {
+        display: table;
+        width: 100%;
+
+        @media screen and (min-width: 1441px) {
+            max-width: 1280px;
+            margin: auto;
+        }
+    }
+
+    &__container {
+        @media screen and (min-width: 1441px) {
+            padding: 0 em(46);
+        }
+    }
+
+    &__dualbox {
+        display: table-cell;
+        float: left;
+        width: 100%;
+        padding: em(80);
+        color: #fff;
+
+        @include desktop {
+            float: none;
+            width: 50%;
+            padding: em(80, $font-size-desktop);
+        }
+
+        &--support {
+            background-color: $brand-support-blue;
+            background-image: url(#{$path-images}herobox-bg.jpg);
+            background-position: right top;
+            background-repeat: no-repeat;
+            background-size: 100% auto;
+        }
+
+        &--report {
+            text-align: center;
+            background-image: url(#{$path-images}hero-bottom-illustration.jpg);
+            background-position: 50% 0;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+    }
+}

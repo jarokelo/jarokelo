@@ -1,0 +1,37 @@
+.contact {
+    padding-bottom: em(100);
+
+    @include desktop {
+        padding-bottom: em(100, $font-size-desktop);
+    }
+
+    &__title {
+        font-weight: 500;
+
+        @include desktop {
+            padding: em(25) 0;
+            font-size: em(30, $font-size-desktop);
+            border-bottom: em(1) solid $brand-light-gray;
+        }
+    }
+
+    button[type="submit"] {
+        margin-top: em(20, $font-size-desktop);
+    }
+
+    textarea {
+        @include desktop {
+            height: em(180, $font-size-desktop);
+        }
+    }
+
+    .footer__social-list {
+        @include desktop {
+            margin-top: em(55, $font-size-desktop);
+        }
+
+        .link {
+            color: $brand-darker-gray;
+        }
+    }
+}
