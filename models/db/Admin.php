@@ -3,7 +3,6 @@
 namespace app\models\db;
 
 use Yii;
-
 use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
@@ -69,6 +68,21 @@ class Admin extends ActiveRecord implements IdentityInterface
     const PERM_PR_PAGE_EDIT = 23;
     const PERM_PR_PAGE_DELETE = 24;
     const PERM_REPORT_STATISTICS = 25;
+    const PERM_REPORT_CATEGORY_ADD = 26;
+    const PERM_REPORT_CATEGORY_EDIT = 27;
+    const PERM_REPORT_CATEGORY_VIEW = 28;
+    const PERM_REPORT_TAXONOMY_ADD = 29;
+    const PERM_REPORT_TAXONOMY_EDIT = 30;
+    const PERM_REPORT_TAXONOMY_VIEW = 31;
+    const PERM_PROJECT_CONFIG_VIEW = 32;
+    const PERM_PROJECT_CONFIG_ADD = 33;
+    const PERM_PROJECT_CONFIG_EDIT = 34;
+    const PERM_CUSTOM_QUESTION_VIEW = 35;
+    const PERM_CUSTOM_QUESTION_ADD = 36;
+    const PERM_CUSTOM_QUESTION_EDIT = 37;
+    const PERM_CUSTOM_FORM_ADD = 38;
+    const PERM_CUSTOM_FORM_EDIT = 39;
+    const PERM_CUSTOM_FORM_VIEW = 40;
 
     /**
      * @inheritdoc
@@ -198,13 +212,35 @@ class Admin extends ActiveRecord implements IdentityInterface
     }
 
     /**
+     * @return array
+     */
+    public static function getAdminList()
+    {
+        /** @var static[] $admins */
+        $admins = static::find()->all();
+        $adminList = [];
+
+        foreach ($admins as $admin) {
+            $adminList[$admin->id] = $admin->getFullName();
+        }
+
+        return $adminList;
+    }
+
+    /**
      * The AdminCities relation.
      *
      * @return \yii\db\ActiveQuery
      */
     public function getAdminCities()
     {
-        return $this->hasMany(AdminCity::className(), ['admin_id' => 'id']);
+        return $this->hasMany(
+            AdminCity::className(),
+            [
+                'admin_id' => 'id',
+            ]
+        )
+            ->from(Yii::$app->project->database_name . '.' . AdminCity::tableName());
     }
 
     /**
@@ -214,7 +250,13 @@ class Admin extends ActiveRecord implements IdentityInterface
      */
     public function getAdminPrPages()
     {
-        return $this->hasMany(AdminPrPage::className(), ['admin_id' => 'id']);
+        return $this->hasMany(
+            AdminPrPage::className(),
+            [
+                'admin_id' => 'id',
+            ]
+        )
+            ->from(Yii::$app->project->database_name . '.' . AdminPrPage::tableName());
     }
 
     /**
@@ -225,7 +267,13 @@ class Admin extends ActiveRecord implements IdentityInterface
      */
     public function getAdminPrPagesAsArray()
     {
-        return $this->hasMany(AdminPrPage::className(), ['admin_id' => 'id'])
+        return $this->hasMany(
+            AdminPrPage::className(),
+            [
+                'admin_id' => 'id',
+            ]
+        )
+            ->from(Yii::$app->project->database_name . '.' . AdminPrPage::tableName())
             ->createCommand()
             ->cache(ArrayHelper::getValue(Yii::$app->params, 'cache.db.commonStats'))
             ->queryAll();
@@ -238,7 +286,19 @@ class Admin extends ActiveRecord implements IdentityInterface
      */
     public function getCities()
     {
-        return $this->hasMany(City::className(), ['id' => 'city_id'])->viaTable(AdminCity::tableName(), ['admin_id' => 'id']);
+        return $this->hasMany(
+            City::className(),
+            [
+                'id' => 'city_id',
+            ]
+        )
+            ->from(Yii::$app->project->database_name . '.' . City::tableName())
+            ->viaTable(
+                Yii::$app->project->database_name . '.' . AdminCity::tableName(),
+                [
+                    'admin_id' => 'id',
+                ]
+            );
     }
 
     /**
@@ -248,7 +308,13 @@ class Admin extends ActiveRecord implements IdentityInterface
      */
     public function getReports()
     {
-        return $this->hasMany(Report::className(), ['admin_id' => 'id']);
+        return $this->hasMany(
+            Report::className(),
+            [
+                'admin_id' => 'id',
+            ]
+        )
+            ->from(Yii::$app->project->database_name . '.' . Report::tableName());
     }
 
     /**
@@ -258,7 +324,13 @@ class Admin extends ActiveRecord implements IdentityInterface
      */
     public function getReportActivities()
     {
-        return $this->hasMany(ReportActivity::className(), ['admin_id' => 'id']);
+        return $this->hasMany(
+            ReportActivity::className(),
+            [
+                'admin_id' => 'id',
+            ]
+        )
+            ->from(Yii::$app->project->database_name . '.' . ReportActivity::tableName());
     }
 
     /**
@@ -432,24 +504,22 @@ class Admin extends ActiveRecord implements IdentityInterface
      */
     public function getScoreData()
     {
-        return static::getDb()->cache(function ($db) {
-            return ReportActivity::find()
-                ->select([
-                    'total'   => new Expression('Sum(IF(type IN (:type1, :type2, :type3, :type4), 1, 0))', [
-                        ':type1' => ReportActivity::TYPE_EDITING,
-                        ':type2' => ReportActivity::TYPE_SEND_TO_AUTHORITY,
-                        ':type3' => ReportActivity::TYPE_RESPONSE,
-                        ':type4' => ReportActivity::TYPE_RESOLVE,
-                    ]),
-                    'editing' => new Expression('SUM(IF(type=:type1, 1, 0))'),
-                    'send'    => new Expression('SUM(IF(type=:type2, 1, 0))'),
-                    'request' => new Expression('SUM(IF(type=:type3, 1, 0))'),
-                    'resolve' => new Expression('SUM(IF(type=:type4, 1, 0))'),
-                ])
-                ->where(['admin_id' => $this->id])
-                ->asArray()
-                ->one();
-        }, Yii::$app->params['cache']['db']['generalDbQuery']);
+        return ReportActivity::find()
+            ->select([
+                'total'   => new Expression('Sum(IF(type IN (:type1, :type2, :type3, :type4), 1, 0))', [
+                    ':type1' => ReportActivity::TYPE_EDITING,
+                    ':type2' => ReportActivity::TYPE_SEND_TO_AUTHORITY,
+                    ':type3' => ReportActivity::TYPE_RESPONSE,
+                    ':type4' => ReportActivity::TYPE_RESOLVE,
+                ]),
+                'editing' => new Expression('SUM(IF(type=:type1, 1, 0))'),
+                'send'    => new Expression('SUM(IF(type=:type2, 1, 0))'),
+                'request' => new Expression('SUM(IF(type=:type3, 1, 0))'),
+                'resolve' => new Expression('SUM(IF(type=:type4, 1, 0))'),
+            ])
+            ->where(['admin_id' => $this->id])
+            ->asArray()
+            ->one();
     }
 
     /**
@@ -464,8 +534,8 @@ class Admin extends ActiveRecord implements IdentityInterface
 
         $query = static::find();
         $query->addSelect(['*'])
-        ->from(['x' => $rankQuery])
-        ->where(['id' => $userId]);
+            ->from(['x' => $rankQuery])
+            ->where(['id' => $userId]);
         return $query->asArray()->one()['rank'] ?: Yii::t('const', 'no-information');
     }
 
@@ -479,19 +549,22 @@ class Admin extends ActiveRecord implements IdentityInterface
         $points = static::find();
 
         $points->addSelect(['admin.*', 'points' => new Expression('COUNT(report_activity.id)')])
-        ->leftJoin(ReportActivity::tableName(), 'admin.id = report_activity.admin_id')
-        ->where([
-            'IN',
-            'report_activity.type',
-            [
-                ReportActivity::TYPE_SEND_TO_AUTHORITY,
-                ReportActivity::TYPE_RESOLVE,
-                ReportActivity::TYPE_RESPONSE,
-                ReportActivity::TYPE_EDITING,
-            ],
-        ])
-        ->groupBy(['admin.id'])
-        ->orderBy('points DESC');
+            ->leftJoin(
+                Yii::$app->project->database_name . '.' . ReportActivity::tableName(),
+                'admin.id = report_activity.admin_id'
+            )
+            ->where([
+                'IN',
+                'report_activity.type',
+                [
+                    ReportActivity::TYPE_SEND_TO_AUTHORITY,
+                    ReportActivity::TYPE_RESOLVE,
+                    ReportActivity::TYPE_RESPONSE,
+                    ReportActivity::TYPE_EDITING,
+                ],
+            ])
+            ->groupBy(['admin.id'])
+            ->orderBy('points DESC');
 
         $query = static::find();
         $query->addSelect([
@@ -501,8 +574,8 @@ class Admin extends ActiveRecord implements IdentityInterface
             'rank' => new Expression('@rank := IF(@prev = @curr, @rank+1, @rank+1)'),
             //'rank' => new Expression('@rank := IF(@prev = @curr, @rank, @rank+1)')
         ])
-        ->from(['admin' => '(' . $points->createCommand()->getRawSql() . ')', new Expression('(SELECT @curr := null, @prev := null, @rank := 0) AS sel1')])
-        ->orderBy('points DESC, id ASC');
+            ->from(['admin' => '(' . $points->createCommand()->getRawSql() . ')', new Expression('(SELECT @curr := null, @prev := null, @rank := 0) AS sel1')])
+            ->orderBy('points DESC, id ASC');
 
         if ($limit !== null) {
             $query->limit($limit);
@@ -631,9 +704,9 @@ class Admin extends ActiveRecord implements IdentityInterface
         }
 
         $query = static::find()->select(['admin_pr_page.pr_page_id'])
-        ->where(['<>', 'admin_pr_page.pr_page_id', '""'])
-        ->andWhere(['admin_pr_page.admin_id' => $this->id])
-        ->leftJoin(AdminPrPage::tableName(), '`admin_pr_page`.`admin_id` = `admin`.`id`');
+            ->where(['<>', 'admin_pr_page.pr_page_id', '""'])
+            ->andWhere(['admin_pr_page.admin_id' => $this->id])
+            ->leftJoin(Yii::$app->project->database_name . '.' . AdminPrPage::tableName(), '`admin_pr_page`.`admin_id` = `admin`.`id`');
 
         $array = [];
 

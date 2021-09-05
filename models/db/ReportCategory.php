@@ -16,10 +16,16 @@ use yii\helpers\ArrayHelper;
  * @property Report[] $reports
  * @property ReportOriginal[] $reportOriginals
  * @property Rule[] $rules
+ * @property ReportTaxonomyRelation[] $reportTaxonomyRelations
+ * @property CustomForm[] $formRelations
  */
 class ReportCategory extends \yii\db\ActiveRecord
 {
-    const CATEGORY_OTHER = 17;
+    const STATUS_ACTIVE = 1;
+    const STATUS_INACTIVE = 0;
+
+    public $taxonomyRelationList = [];
+    public $formRelationList = [];
 
     /**
      * @inheritdoc
@@ -36,8 +42,111 @@ class ReportCategory extends \yii\db\ActiveRecord
     {
         return [
             [['name'], 'string', 'max' => 255],
+            [['name'], 'required'],
+            [['name'], 'unique'],
             [['is_active'], 'integer'],
+            [['taxonomyRelationList', 'formRelationList'], 'safe'],
+            ['is_active', 'in', 'range' => [self::STATUS_INACTIVE, self::STATUS_ACTIVE]],
         ];
+    }
+
+    /**
+     * @return int|null
+     */
+    public static function getDefaultId()
+    {
+        /** @var static $entity */
+        $entity = static::find()
+            ->where(['is_active' => self::STATUS_ACTIVE])
+            ->orderBy(['id' => SORT_ASC])
+            ->one();
+
+        if ($entity) {
+            return $entity->id;
+        }
+
+        return null;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function afterSave($insert, $changedAttributes)
+    {
+        parent::afterSave($insert, $changedAttributes);
+
+        $result = true;
+        $res = true;
+
+        if (!$insert) {
+            // Removing previous relations (if there are any)
+            ReportTaxonomyRelation::deleteAll([
+                'report_category_id' => $this->id,
+            ]);
+        }
+
+        $this->taxonomyRelationList = array_unique($this->taxonomyRelationList);
+
+        if (!empty($this->taxonomyRelationList)) {
+            // Inserting new relations
+            foreach ($this->taxonomyRelationList as $key => $relation) {
+                if ($relation == -1) {
+                    continue;
+                }
+
+                $model = (new ReportTaxonomyRelation([
+                    'report_category_id' => $this->id,
+                    'report_taxonomy_id' => $relation,
+                    'priority' => $key * 5,
+                ]));
+                $save = $model->save();
+
+                if (!$save) {
+                    $result = false;
+                }
+            }
+        }
+
+        if (!$result) {
+            throw new \RuntimeException(
+                'An error occurred upon saving the taxonomy relations'
+            );
+        }
+
+        if (!$insert) {
+            CustomFormRelation::deleteAll([
+                'type' => CustomFormRelation::TYPE_REPORT_CATEGORY,
+                'entity_id' => $this->id,
+            ]);
+        }
+
+        $this->formRelationList = array_unique($this->formRelationList);
+
+        if (!empty($this->formRelationList)) {
+            // Inserting new relations
+            foreach ($this->formRelationList as $key => $formRelationId) {
+                if ($formRelationId == -1) {
+                    continue;
+                }
+
+                $s = (new CustomFormRelation([
+                    'type' => CustomFormRelation::TYPE_REPORT_CATEGORY,
+                    'entity_id' => $this->id,
+                    'custom_form_id' => $formRelationId,
+                    'priority' => $key * 5,
+                ]))->save();
+
+                if (!$s) {
+                    $res = false;
+                }
+            }
+        }
+
+        if (!$res) {
+            throw new \RuntimeException(
+                'An error occurred upon saving the form relations'
+            );
+        }
     }
 
     /**
@@ -49,7 +158,101 @@ class ReportCategory extends \yii\db\ActiveRecord
             'id' => Yii::t('data', 'category.id'),
             'name' => Yii::t('data', 'category.name'),
             'is_active' => Yii::t('data', 'category.is_active'),
+            'taxonomyRelationList' => Yii::t('data', 'Kapcsolat létrehozása alkategóriákkal'),
+            'formRelationList' => Yii::t('data', 'Kapcsolat létrehozása egyedi űrlapokkal'),
         ];
+    }
+
+    /**
+     * Composing a list, which includes the identifier of the associated taxonomies
+     * @return array
+     */
+    public function getTaxonomyRelationList()
+    {
+        $relations = $this->reportTaxonomyRelations;
+
+        if (!$relations) {
+            return [];
+        }
+
+        $result = array_reduce(
+            $relations,
+            function (array $carry, ReportTaxonomyRelation $relation) {
+                $taxonomy = $relation->reportTaxonomy;
+                $carry[] = [
+                    'priority' => $relation->priority,
+                    'id' => $taxonomy->id,
+                    'name' => $taxonomy->name,
+                ];
+                return $carry;
+            },
+            []
+        );
+
+        uasort($result, function ($a, $b) {
+            if (!isset($a['priority']) || !isset($b['priority'])) {
+                return;
+            }
+
+            // PHP 7 version - $a['priority'] <=> $b['priority]
+            return ($a['priority'] < $b['priority'])
+                ? -1
+                : (($a['priority'] > $b['priority']) ? 1 : 0);
+        });
+
+        return array_values($result);
+    }
+
+    /**
+     * @return array
+     */
+    public function getFormRelationList()
+    {
+        $relations = $this->formRelations;
+
+        if (!$relations) {
+            return [];
+        }
+
+        return array_reduce(
+            $relations,
+            function (array $carry, CustomFormRelation $relation) {
+                $customForm = $relation->customForm;
+                $carry[] = [
+                    'priority' => $relation->priority,
+                    'id' => $customForm->id,
+                ];
+                return $carry;
+            },
+            []
+        );
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getReportTaxonomyRelations()
+    {
+        return $this->hasMany(ReportTaxonomyRelation::class, ['report_category_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getFormRelations()
+    {
+        return $this
+            ->hasMany(
+                CustomFormRelation::class,
+                [
+                    'entity_id' => 'id',
+                ]
+            )
+            ->where(
+                [
+                    'type' => CustomFormRelation::TYPE_REPORT_CATEGORY,
+                ]
+            );
     }
 
     /**
@@ -90,14 +293,10 @@ class ReportCategory extends \yii\db\ActiveRecord
      */
     public static function getList()
     {
-        $result = static::getDb()->cache(function ($db) {
-            return static::find()
-                ->where(['is_active' => 1])
-                ->orderBy('name')
-                ->all();
-        }, Yii::$app->params['cache']['db']['generalDbQuery']);
-
-        return ArrayHelper::map($result, 'id', 'name');
+        return ArrayHelper::map(static::find()
+            ->where(['is_active' => 1])
+            ->orderBy('name')
+            ->all(), 'id', 'name');
     }
 
     /**

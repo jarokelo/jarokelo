@@ -54,7 +54,8 @@
     },
     "globals": {
       "Dropzone": true,
-      "baseUrl": true
+      "baseUrl": true,
+      "Raven": true
     }
   }
 }

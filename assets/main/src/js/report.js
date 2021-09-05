@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /* global $, site, autosize, google, baseUrl */
 (function($, site) {
     'use strict';
@@ -87,7 +88,7 @@
     return $.extend(site, {
         Report: {
             mapData: [],
-            steps: function(event, map) {
+            steps: function() {
                 var $step = $('[step]');
                 var $videoContainer = $('.video-container');
 
@@ -101,10 +102,48 @@
 
                 $(document).on('click', '[show-step]', function() {
                     var $this = $(this);
+                    var previousStep = $('.steps__icon--active').attr('show-step');
+                    // Active step
                     var step = $this.attr('show-step');
+
+                    setTimeout(function() {
+                        window._mapReady.resize();
+                    }, 0);
+
+                    if (previousStep === 'custom_form'
+                        && IS_CUSTOM_FORM_ENABLED
+                        && errorHandler()
+                        && (1 * step) !== 1 // Allowing to go back to the first step
+                    ) {
+                        $('.help-block').each(function() {
+                            var $self = $(this);
+
+                            // Navigating to the input, which has an error
+                            if ($self.text().length > 0) {
+                                window.scrollTo({
+                                    top: $self.offset().top - 250,
+                                    behavior: 'smooth',
+                                    block: 'start'
+                                });
+                            }
+                        });
+
+                        return;
+                    }
+
+                    var $stepCustomForm = $('.step[step="custom_form"]');
+
+                    if (step === 'custom_form') {
+                        $stepCustomForm.show();
+                    }
+
+                    window.scrollTo(0, 0);
                     $step.hide();
 
                     if (step === 'final') {
+                        setTimeout(function() {
+                            $stepCustomForm.hide();
+                        }, 0);
                         $step.addClass('step--final');
                         active(step);
                         $step.show();
@@ -119,17 +158,23 @@
                         $step.removeClass('step--final');
                         active(step);
                     }
-
-                    window.scrollTo(0, 0);
-
-                    // force refresh google map
-                    google.maps.event.trigger(map, 'resize');
                 });
 
                 $(document).on('click', '.step__helper', function() {
                     var $this = $(this);
 
                     $('<div>' + $this.closest('.step').find('.step__help:eq(0)').html() + '</div>')
+                        .modal({
+                            escapeClose: true,
+                            clickClose: true,
+                            showClose: true,
+                            fadeDuration: 300,
+                            closeText: ''
+                        });
+                });
+
+                $(document).on('click', '[data-target="#tosModal"]', function() {
+                    $('<div>' + $('.tos_container').html() + '</div>')
                         .modal({
                             escapeClose: true,
                             clickClose: true,
@@ -235,8 +280,15 @@
                 $(document).on('change', '#report-search-form select, #front-search-form select', function() {
                     $(this).closest('form').submit();
                 });
+                var $self = this;
 
-                $(document).on('mapReady', this.steps);
+                $(document).ready(function() {
+                    $(document).on('mapReady', $self.steps);
+
+                    if (window._mapReady) {
+                        $(document).trigger('mapReady', window._mapReady);
+                    }
+                });
 
                 $(document).on('change', '#report-map-search-form-city', function() {
                     var locField = $('#map-search-form-location');
@@ -266,16 +318,9 @@
         }
     });
 })(jQuery, site || {});
+
 $(document).ready(function() {
     $(function() {
         site.Report.init();
     });
-
-    if (typeof google !== 'undefined') {
-        google.maps.event.addDomListener(window, 'load', function() {
-            var input = document.getElementById('map-search-form-location');
-            return new google.maps.places.Autocomplete(input);
-        });
-    }
 });
-

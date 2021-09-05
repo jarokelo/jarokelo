@@ -14,6 +14,7 @@
             prefix: 'radio-',
             template: '<div class="radio"></div>',
             check: '<div class="radio__check"></div>',
+            multiSelectable: false,
             deselectable: false,
             classes: {
                 label: 'radio__label',
@@ -27,6 +28,7 @@
             template: '<div class="checkbox"></div>',
             check: '<div class="checkbox__check"></div>',
             deselectable: true,
+            multiSelectable: false,
             classes: {
                 label: 'checkbox__label',
                 checked: 'checkbox--checked',
@@ -151,15 +153,18 @@
                     }
                     $input.trigger('change');
                     // deselect other inputs under same group
-                } else {
+                } else if (!_this.options.multiSelectable) {
                     var $otherInput = $(input);
                     var otherInstance = $otherInput.data(_this.type);
-                    otherInstance.checked = false;
-                    setTimeout(function() {
-                        $otherInput.prop('checked', false);
-                        otherInstance.$template.removeClass(_this.options.classes.checked);
-                    }, 0);
-                    $otherInput.trigger('change');
+
+                    if (otherInstance) {
+                        otherInstance.checked = false;
+                        setTimeout(function() {
+                            $otherInput.prop('checked', false);
+                            otherInstance.$template.removeClass(_this.options.classes.checked);
+                        }, 0);
+                        $otherInput.trigger('change');
+                    }
                 }
             });
         }
@@ -177,6 +182,10 @@
     $.fn.radio = $.fn.checkbox = function(options) {
         return this.each(function() {
             var $this = $(this);
+            var name = $this.attr('name');
+            var $hiddenField = $('[name="' + name + '"][type="hidden"]');
+            $hiddenField.remove();
+
             var type = $this.attr('type');
             var autoDiscover = $this.attr(defaults[type].prefix + 'autodiscover');
             var enabled = autoDiscover ? !!+autoDiscover === true : true;

@@ -5,7 +5,6 @@ namespace app\models\db;
 use app\components\EmailHelper;
 use app\components\helpers\Html;
 use app\components\helpers\Link;
-use app\components\helpers\S3;
 use Yii;
 use yii\helpers\FileHelper;
 use yii\helpers\StringHelper;
@@ -93,6 +92,8 @@ class ReportActivity extends ActiveRecord
     const PARAM_OLD_VALUE_STATUS = 'old_value_status';
     const PARAM_NEW_VALUE_STATUS = 'new_value_status';
     const PARAM_NEW_VALUE_REASON = 'new_value_reason';
+
+    const JAROKELO_ADMIN = 6917;
 
     /**
      * @inheritdoc
@@ -829,25 +830,18 @@ class ReportActivity extends ActiveRecord
      */
     public function assignAttachments($attachments)
     {
+        $reportFolder = $this->report->getFileUrl();
+
         foreach ($attachments as $attachment) {
-            // Capture file url from temp folder
-            $from = $attachment->getAttachmentUrl(ReportAttachment::SIZE_PICTURE_ORIGINAL, true);
             $attachment->report_activity_id = $this->id;
             $attachment->report_id = $this->report_id;
-
             if ($attachment->save()) {
                 $sourcePath = Yii::getAlias('@app/web/files/report/temp');
+                $destinationPath = Yii::getAlias("@app/web/files/report/{$reportFolder}");
 
-                if ($attachment->isStorageS3()) {
-                    $s3 = new S3();
-                    $to = $attachment->getAttachmentUrl(ReportAttachment::SIZE_PICTURE_ORIGINAL, true);
-                    $s3->copy($from, $to, true);
-                    $s3->delete($from);
-                } else {
-                    $destinationPath = $attachment->getAttachmentUrl();
-                    FileHelper::createDirectory($destinationPath);
-                    rename($sourcePath . "/{$attachment->name}", $destinationPath . "/{$attachment->name}");
-                }
+                FileHelper::createDirectory($destinationPath);
+
+                rename($sourcePath . "/{$attachment->name}", $destinationPath . "/{$attachment->name}");
             }
         }
     }
@@ -877,6 +871,10 @@ class ReportActivity extends ActiveRecord
         if ($this->type == self::TYPE_COMMENT) {
             // hiding users name
             return Yii::t('report', 'report.pdf.comments.name.user');
+        }
+
+        if ($this->admin_id == self::JAROKELO_ADMIN) {
+            return Yii::t('report', 'report.pdf.comments.name.admin');
         }
 
         if ($this->institution) {

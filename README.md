@@ -11,7 +11,7 @@ The minimum requirement for this application template is that your Web server su
 First time to acquire the repository.
 
 ```sh
-git clone --config core.autocrlf=false git@github.com:jarokelo/jarokelo2.0.git
+git clone --config core.autocrlf=false git@github.com:jarokelo/jarokelo.git
 ```
 
 TODO: Consider .gitattributes in the repository itself.

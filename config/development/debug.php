@@ -2,30 +2,31 @@
 
 if (!function_exists('d')) {
     /**
-     * Alias of yii\helpers\VarDumper::dump()
-     *
      * @param $var
-     * @param int $depth
-     * @param bool $highlight
      */
-    function d($var, $depth = 10, $highlight = true)
+    function d(...$var)
     {
-        yii\helpers\VarDumper::dump($var, $depth, $highlight);
+        yii\helpers\VarDumper::dump($var, 10, true);
     }
 }
 
 if (!function_exists('dd')) {
     /**
-     * Alias of yii\helpers\VarDumper::dump()
-     * [!!!] IMPORTANT: execution will halt after call to this function
-     *
      * @param $var
-     * @param int $depth
-     * @param bool $highlight
      */
-    function dd($var, $depth = 10, $highlight = true)
+    function dd(...$var)
     {
-        yii\helpers\VarDumper::dump($var, $depth, $highlight);
+        yii\helpers\VarDumper::dump($var, 10, true);
         die;
+    }
+}
+
+if (!function_exists('alert')) {
+    /**
+     * @param $var
+     */
+    function alert(...$var)
+    {
+        yii\helpers\VarDumper::dump($var, 10, true);
     }
 }

@@ -3,9 +3,6 @@
 namespace app\modules\admin\controllers;
 
 use app\components\ActiveForm;
-use app\models\db\ReportAttachmentOriginal;
-use app\models\ReportMapLayer;
-use yii\base\Model;
 use yii\helpers\Url;
 use app\models\db\Admin;
 use app\models\db\AdminCity;
@@ -67,7 +64,7 @@ class ReportController extends Controller
     {
         return [
             'au.upload.comment.attachment' => [
-                'class' => 'app\components\jqueryupload\UploadAction',
+                'class' => 'mito\jqueryupload\UploadAction',
                 'paramName' => Html::getInputName(new CommentForm(), 'attachments'),
                 'createDirs' => true,
                 'maxSize' => 10 * 1024 * 1024,
@@ -75,7 +72,7 @@ class ReportController extends Controller
                 'thumbnailCallback' => false,
             ],
             'au.upload.answer.attachment' => [
-                'class' => 'app\components\jqueryupload\UploadAction',
+                'class' => 'mito\jqueryupload\UploadAction',
                 'paramName' => Html::getInputName(new AnswerForm(), 'attachments'),
                 'createDirs' => true,
                 'maxSize' => 10 * 1024 * 1024,
@@ -83,16 +80,16 @@ class ReportController extends Controller
                 'thumbnailCallback' => false,
             ],
             'au.thumb' => [
-                'class' => 'app\components\jqueryupload\UploadActionThumbAction',
+                'class' => 'mito\jqueryupload\ThumbAction',
                 'uploadDest' => '@runtime/upload-tmp/report',
             ],
             'au.fullthumb' => [
-                'class' => 'app\components\jqueryupload\ThumbAction',
+                'class' => 'mito\jqueryupload\ThumbAction',
                 'uploadDest' => '@runtime/upload-tmp/report',
                 'useThumbs' => false,
             ],
             'au.delete' => [
-                'class' => 'app\components\jqueryupload\DeleteAction',
+                'class' => 'mito\jqueryupload\DeleteAction',
                 'uploadDest' => '@runtime/upload-tmp/report',
             ],
         ];
@@ -169,8 +166,6 @@ class ReportController extends Controller
             Yii::$app->response->format = Response::FORMAT_JSON;
 
             $model = ReportAttachment::findOne($id);
-            $model->updated_at = time();
-            $model->update();
 
             return [
                 'success' => true,
@@ -195,12 +190,9 @@ class ReportController extends Controller
         $model = ReportAttachment::findOne($id);
 
         if (Yii::$app->request->isPost) {
-            if ($original = ReportAttachmentOriginal::findOne(['report_attachment_id' => $id])) {
-                $original->delete();
-            }
-
             if ($model) {
-                $model->delete();
+                $model->status = 0;
+                $model->save();
             }
 
             return $this->redirect(['report/update', 'id' => $model->report_id]);
@@ -325,33 +317,6 @@ class ReportController extends Controller
                 $model->addAttachment(ReportAttachment::TYPE_PICTURE, [
                     'name' => $picture,
                 ]);
-            }
-
-            $layers = Yii::$app->request->post('selected_map_layers', []);
-            $reportLayers = $model->getMapLayers();
-            $delete = [];
-
-            if ($layers) {
-                // Removing deleted items
-                foreach ($reportLayers as $layer) {
-                    if (!in_array($layer, $layers)) {
-                        $delete[] = $layer;
-                    }
-                }
-
-                foreach ($layers as $layer) {
-                    $reportMapLayer = new ReportMapLayer();
-                    $reportMapLayer->report_id = $model->id;
-                    $reportMapLayer->map_layer_id = $layer;
-                    $reportMapLayer->save();
-                }
-            } else {
-                // Mass delete
-                $delete = $reportLayers;
-            }
-
-            if ($delete) {
-                ReportMapLayer::deleteAll(['report_id' => $model->id, 'map_layer_id' => $delete]);
             }
 
             return $this->redirect(['reports/view', 'id' => $id]);

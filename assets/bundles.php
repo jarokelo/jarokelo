@@ -24,4 +24,5 @@ return [
     'app\assets\jqueryupload\LoadImageAsset',
     'app\assets\jqueryupload\PreviewAsset',
     'app\assets\jqueryupload\VideoPreviewAsset',
+    'app\assets\CustomFormAsset',
 ];

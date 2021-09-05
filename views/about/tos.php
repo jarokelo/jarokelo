@@ -1,4 +1,9 @@
-<div class="container">
+<style>
+    .tos_container {
+        display: none;
+    }
+</style>
+<div class="tos_container container">
     <div class="row center-xs">
         <div class="col-xs-12 col-lg-9 text-left">
             <h1 class="c24" id="h.j5yyeyem59us">

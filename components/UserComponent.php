@@ -19,7 +19,10 @@ class UserComponent extends \yii\web\User
      */
     public function init()
     {
-        if (Yii::$app->controller->module->id === 'admin') {
+        // Yii::$app->controller is not yet initialized after the Yii2 upgrade to >2.0.10
+        // if (Yii::$app->controller->module->id === 'admin') {
+        $route = Yii::$app->urlManager->parseRequest(Yii::$app->request)[0];
+        if (substr($route, 0, 5) === 'admin') {
             $this->identityClass = 'app\models\db\Admin';
             $this->loginUrl = ['admin/auth/login'];
             $this->enableAutoLogin = true;

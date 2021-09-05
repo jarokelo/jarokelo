@@ -1,6 +1,6 @@
 /* eslint-disable */
 /* global $, mapboxgl, google, Map */
-var Mapbox = (function() {
+var Mapbox = (function() {  // eslint-disable-line no-unused-vars
     'use strict';
 
     // initializing mapbox token
@@ -15,8 +15,7 @@ var Mapbox = (function() {
     var autocomplete;
     var map;
     var triggerResize = true;
-    var mapLayers = window.mapInitData.mapLayers;
-    var enableGeoCodeService = window.mapInitData.enableGeoCodeService || false;
+    var isReportEndPage = window.mapInitData.isReportEndPage || false;
 
     /**
      * @param {string} inputName
@@ -154,14 +153,16 @@ var Mapbox = (function() {
      * @var {bool} draggable
      */
     function initMarker(draggable) {
-        var el = document.createElement('img');
-        el.className = 'marker';
-        el.src = 'https://maps.gstatic.com/mapfiles/api-3/images/spotlight-poi2_hdpi.png';
-        el.style.width = '27px';
-        el.style.height = '43px';
+        var svgElem = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        var useElem = document.createElementNS('http://www.w3.org/2000/svg', 'use');
+        useElem.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href',  window.STATIC_ASSETS_PATH + '/images/icons.svg#icon-magnify');
 
-        marker = new mapboxgl.Marker(el, {
-            draggable: draggable
+        svgElem.appendChild(useElem);
+        svgElem.style.height = '43px';
+        svgElem.setAttribute('fill', '#104A9C');
+
+        marker = new mapboxgl.Marker(svgElem, {
+            draggable: draggable,
         });
 
         // avoid useless geocode request upon static maps
@@ -235,8 +236,8 @@ var Mapbox = (function() {
         infoWindow.setPosition(pos);
         infoWindow.setContent(
             browserHasGeolocation ?
-            'Error: The Geolocation service failed.' :
-            'Error: Your browser doesn\'t support geolocation.'
+                'Error: The Geolocation service failed.' :
+                'Error: Your browser doesn\'t support geolocation.'
         );
     }
 
@@ -248,7 +249,7 @@ var Mapbox = (function() {
         autocomplete = new google.maps.places.Autocomplete(
             $(mapSelectors.user_location)[0],
             {
-                types: ['address'],
+                types: ['(cities)'],
                 componentRestrictions: {country: 'hu'}
             }
         );
@@ -336,13 +337,14 @@ var Mapbox = (function() {
 
         initMarker(true);
 
-        if (enableGeoCodeService) {
-            geoCodePlaceMarker({
+        if (isReportEndPage) {
+            // initial call to set default location on map
+            placeMarker({
                 'lng': defaultCenterLng,
                 'lat': defaultCenterLat
             });
         } else {
-            placeMarker({
+            geoCodePlaceMarker({
                 'lng': defaultCenterLng,
                 'lat': defaultCenterLat
             });
@@ -363,41 +365,7 @@ var Mapbox = (function() {
         map.addControl(new mapboxgl.NavigationControl(), 'bottom-right');
 
         $(document).trigger('mapReady', map);
-
-        if (mapLayers.length > 0) {
-            map.on('load', function() {
-                var script = document.createElement('script');
-                script.onload = function() {
-                    var map_layer = window.MAPLAYERDATA;
-
-                    for (var i = 0; i < map_layer.length; i++) {
-                        map.addLayer(
-                            {
-                                'id': 'regionlayer_line_' + i,
-                                'type': 'line',
-                                'source': {
-                                    'type': 'geojson',
-                                    'data': JSON.parse(map_layer[i].data)[0]
-                                },
-                                'paint': {
-                                    'line-color': map_layer[i].color || 'blue',
-                                    'line-width': 3,
-                                    'line-opacity': 0.5
-                                }
-                            }
-                        );
-                    }
-                };
-
-                var parameterizeArray = function (key, arr) {
-                    arr = arr.map(encodeURIComponent);
-                    return '?' + key + '[]=' + arr.join('&' + key + '[]=');
-                };
-
-                script.src = '/get-map-layer.js' + parameterizeArray('id', mapLayers);
-                document.getElementsByTagName('head')[0].appendChild(script);
-            });
-        }
+        window._mapReady = map;
     };
 
     return {

@@ -2,9 +2,6 @@
 
 namespace app\models\db;
 
-use app\components\helpers\S3;
-use app\components\storage\StorageInterface;
-use app\models\ReportMapLayer;
 use Yii;
 use app\components\Header;
 use app\components\helpers\Link;
@@ -16,6 +13,7 @@ use yii\db\Expression;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Inflector;
 use yii\helpers\Url;
+use app\components\helpers\Project;
 
 /**
  * This is the model class for table "report".
@@ -42,7 +40,6 @@ use yii\helpers\Url;
  * @property string $updated_at
  * @property integer $highlighted
  * @property integer $anonymous
- * @property integer $project
  * @property Email[] $emails
  * @property Notification[] $notifications
  * @property Admin $admin
@@ -56,7 +53,6 @@ use yii\helpers\Url;
  * @property ReportAttachment[] $reportAttachments
  * @property ReportAttachmentOriginal[] $reportAttachmentOriginals
  * @property ReportOriginal $reportOriginal
- * @property ReportMapLayer[] $reportMapLayer
  */
 class Report extends ActiveRecord
 {
@@ -89,23 +85,18 @@ class Report extends ActiveRecord
     const SOURCE_EXCEL = 'excel';
 
     const UNNAMED_ROAD = 'Unnamed Road';
+    const INCLUSION = 'inclusion';
 
-    /**
-     * @var int
-     */
     const PROJECT_DEFAULT = 0;
 
     const CATEGORY_POTHOLE = 25;
     const CATEGORY_GREENERY = 26;
 
-    const DONATION_BOX_ACTIVITY_NUMBER = 5;
-    const DONATION_BOX_START_DATE = '2020-10-01';
-
     /**
      * @var array
      */
     public static $projects = [
-        self::PROJECT_DEFAULT => 'myProject',
+        self::PROJECT_DEFAULT => 'Járókelő',
     ];
 
     /**
@@ -145,14 +136,13 @@ class Report extends ActiveRecord
             [['name', 'description'], 'default'],
             [['city_id', 'name'], 'required'],
             [['user_id'], 'required', 'on' => self::SCENARIO_DRAFT],
-            [['user_location', 'latitude', 'longitude', 'street_name'], 'required', 'except' => self::SCENARIO_DRAFT],
-            [['report_category_id'], 'required', 'except' => [self::SCENARIO_DRAFT]],
+            [['report_category_id', 'user_location', 'latitude', 'longitude', 'street_name'], 'required', 'except' => self::SCENARIO_DRAFT],
             [['city_id', 'rule_id', 'institution_id', 'user_id', 'admin_id', 'district_id', 'status', 'zoom', 'created_at', 'updated_at', 'highlighted', 'anonymous', 'report_category_id', 'post_code'], 'integer'],
             [['description'], 'string'],
             [['latitude', 'longitude'], 'number'],
             [['name', 'user_location', 'street_name'], 'string', 'max' => 255],
             [['anonymous'], 'in', 'range' => [0, 1]],
-            [['project'], 'in', 'range' => array_keys(static::getProjects())],
+            [['project'], 'in', 'range' => [min($keys = array_keys(static::getProjects())), max($keys)]],
         ];
     }
 
@@ -205,6 +195,7 @@ class Report extends ActiveRecord
             'videos' => Yii::t('data', 'report.videos'),
             'highlighted' => Yii::t('data', 'report.highlighted'),
             'anonymous' => Yii::t('data', 'report.anonymous'),
+            'inclusion' => Yii::t('data', 'report.inclusion'),
             'location' => Yii::t('data', 'report.location'),
         ];
     }
@@ -228,15 +219,6 @@ class Report extends ActiveRecord
             self::STATUS_DELETED => Yii::t('const', 'report.status.7'),
             self::STATUS_DRAFT => Yii::t('const', 'report.status.9'),
         ];
-    }
-
-    /**
-     * @return bool
-     */
-    public function isDonationBoxAvailable()
-    {
-        return $this->getReportActivityCount() >= self::DONATION_BOX_ACTIVITY_NUMBER
-            && $this->created_at >= strtotime(self::DONATION_BOX_START_DATE);
     }
 
     /**
@@ -271,10 +253,7 @@ class Report extends ActiveRecord
         $statusFilters = [
             ' ' => [],
             self::STATUS_WAITING_FOR_ANSWER => Yii::t('const', 'report.filter.status.3'),
-            self::STATUS_WAITING_FOR_RESPONSE => Yii::t('const', 'report.filter.status.4'),
-            self::STATUS_WAITING_FOR_SOLUTION => Yii::t('const', 'report.filter.status.8'),
             self::STATUS_RESOLVED => Yii::t('const', 'report.status.5'),
-            self::STATUS_UNRESOLVED => Yii::t('const', 'report.status.6'),
         ];
 
         $userFilters = Yii::$app->user->isGuest ? [] : [
@@ -426,16 +405,6 @@ class Report extends ActiveRecord
     }
 
     /**
-     * The ReportMapLayer relation.
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getReportMapLayer()
-    {
-        return $this->hasMany(ReportMapLayer::className(), ['report_id' => 'id']);
-    }
-
-    /**
      * The ReportOriginal relation.
      *
      * @return \yii\db\ActiveQuery
@@ -530,8 +499,8 @@ class Report extends ActiveRecord
             ->column();
 
         return static::find()
-            ->where(['report.id' => $reportIDs])
-            ->orderBy(['report.id' => SORT_DESC])
+            ->where(['id' => $reportIDs])
+            ->orderBy(['id' => SORT_DESC])
             ->limit($limit)
             ->all();
     }
@@ -638,7 +607,26 @@ class Report extends ActiveRecord
             return false;
         }
 
-        $this->project = $this->project ?: self::PROJECT_DEFAULT;
+        // Obfuscate original address for privacy. Move the coords in a random in a ca. 300m circular area
+        if ($insert) {
+            $randomDistance = (float)rand() / (float)getrandmax();
+            $randomDegree = (float)rand() / (float)getrandmax();
+
+            $maxDistance = 300; // Max distance in kilometers
+            $r = $maxDistance * pow($randomDistance, 0.5);
+            $theta = $randomDegree * 2 * 3.14159265359;
+            $dx = $r * cos($theta);
+            $dy = $r * sin($theta);
+
+            $earthRadius = 6371; // km
+            $oneDegree = $earthRadius * 2 * 3.14159265359 / 360 * 1000; // 1° latitude in meters
+
+            $random_lat = $this->latitude + $dy / $oneDegree;
+            $random_lon = $this->longitude + $dx / ( $oneDegree * cos($this->latitude * 3.14159265359 / 180) );
+
+            $this->latitude = $random_lat;
+            $this->longitude = $random_lon;
+        }
 
         if (!$insert && $this->isAttributeChanged('institution_id', false)) {
             $institutionId = $this->getOldAttribute('institution_id');
@@ -664,16 +652,6 @@ class Report extends ActiveRecord
     {
         parent::afterSave($insert, $changedAttributes);
 
-        if ($insert) {
-            // logging report source (api, web) during insertion
-            (new ReportEvent([
-                'report_id' => $this->id,
-                'source' => $this->getScenario() == self::SCENARIO_API
-                    ? ReportEvent::SOURCE_API
-                    : ReportEvent::SOURCE_WEB,
-            ]))->save();
-        }
-
         if (
             ($insert && $this->status != self::STATUS_DRAFT) ||
             (array_key_exists('status', $changedAttributes) && $this->getOldAttribute('status') == self::STATUS_DRAFT && $this->status != self::STATUS_DRAFT)
@@ -681,7 +659,6 @@ class Report extends ActiveRecord
             $activityOpen = $this->constructActivity(ReportActivity::TYPE_OPEN, [
                 'user_id' => $this->user_id,
                 'created_at' => $this->created_at,
-                'updated_at' => $this->updated_at,
             ]);
             $activityOpen->detachBehavior('timestamp');
             $activityOpen->save();
@@ -801,61 +778,40 @@ class Report extends ActiveRecord
     ) {
         $imgFileName = 'default.jpg';
         $updatedAt = null;
-        $reportId = null;
-        $isImgFileNameSet = false;
 
         if ($report !== null && is_int($report)) {
-            $reportId = $report;
-            $reportAttachment = ReportAttachment::getCoverImageByReportId($reportId);
-            $isImgFileNameSet = true;
-
-            if ($reportAttachment !== null) {
-                $imgRecord = $reportAttachment;
-                $updatedAt = $imgRecord->updated_at;
-                $imgFileName = $imgRecord->name;
-            }
+            $report = static::find()
+                ->joinWith('reportAttachments')
+                ->where([
+                    'report.id' => $report,
+                    'report_attachment.type' => ReportAttachment::TYPE_PICTURE,
+                    'report_attachment.status' => ReportAttachment::STATUS_VISIBLE,
+                ])
+                ->orderBy(['created_at' => SORT_ASC])
+                ->one();
         }
 
-        if (!$isImgFileNameSet && $report !== null && $report instanceof static && count($report->reportAttachments) > 0) {
-            /** @var ReportAttachment $imgFile */
+        if ($report !== null && $report instanceof static && count($report->reportAttachments) > 0) {
             $imgFile = $report->getReportAttachments()
-                ->select(['name', 'updated_at', 'storage'])
+                ->select(['name', 'updated_at'])
                 ->andWhere(['report_attachment.status' => ReportAttachment::STATUS_VISIBLE])
                 ->limit(1)
                 ->one();
 
-            if ($imgFile) {
-                $imgFileName = $imgFile->getAttribute('name');
-                $updatedAt = $imgFile->getAttribute('updated_at');
-            }
-
-            $reportId = $report->id;
+            $imgFileName = $imgFile->getAttribute('name');
+            $updatedAt = $imgFile->getAttribute('updated_at');
         }
 
         $path = 'web/files/report';
 
-        if ($reportId !== null) {
-            $path .= '/' . static::fileUrl($reportId);
+        if ($report !== null && $report instanceof static) {
+            $path .= '/' . $report->getFileUrl();
         }
 
         $path = implode('/', [$path, ReportAttachment::getPictureFolderBySize($size)]);
         $imgPath = Yii::getAlias("@app/{$path}/{$imgFileName}");
-        $value = isset($updatedAt) ? $updatedAt : null;
 
-        if ((isset($imgFile) && $imgFile->isStorageS3()) || (isset($imgRecord) && $imgRecord->isStorageS3())) {
-            $s3Image = S3::getPath($path, $imgFileName);
-
-            if ($useBasePath) {
-                return $s3Image;
-            }
-
-            return sprintf(
-                '%s?%s',
-                $s3Image,
-                $value
-            );
-        } elseif (file_exists($imgPath) && is_file($imgPath)) {
-            // Fallback..
+        if (file_exists($imgPath) && is_file($imgPath)) {
             if ($useBasePath) {
                 return Yii::getAlias("@{$path}/{$imgFileName}");
             }
@@ -863,7 +819,7 @@ class Report extends ActiveRecord
             return sprintf(
                 '%s?%s',
                 Yii::getAlias("@{$path}/{$imgFileName}"),
-                $value
+                isset($updatedAt) ? $updatedAt : null
             );
         }
 
@@ -922,8 +878,7 @@ class Report extends ActiveRecord
             return Url::to(['/report/create', 'from_id' => $this->id]);
         }
 
-        $city_slug = City::getSlugById($this->city_id);  // This method uses DB cache, don't use "$this->city->slug"
-        $urlParts = [Link::REPORTS, $city_slug, $this->id, $this->slug];
+        $urlParts = [Link::REPORTS, $this->city->slug, $this->id, $this->slug];
 
         if ($source !== null) {
             switch ($source) {
@@ -1009,8 +964,6 @@ class Report extends ActiveRecord
      * @param string $type the type of the activity
      * @param array $data the activity data
      * @return boolean True, if saving the ReportActivity was successful
-     * @see Report::createActivity()
-     * @deprecated it should return with the added activity itself
      */
     public function addActivity($type, $data = [])
     {
@@ -1030,29 +983,6 @@ class Report extends ActiveRecord
     }
 
     /**
-     * Constructs and inserts a ReportActivity for this Report.
-     *
-     * @param string $type the type of the activity
-     * @param array $data the activity data
-     * @return ReportActivity
-     */
-    public function createActivity($type, $data = [])
-    {
-        $activity = $this->constructActivity($type, $data);
-
-        if (!$activity->save()) {
-            throw new \RuntimeException('Unable to insert ReportActivity');
-        }
-
-        if (!empty($activity->admin_id) && $this->admin_id != $activity->admin_id) {
-            $this->admin_id = $activity->admin_id;
-            $this->save();
-        }
-
-        return $activity;
-    }
-
-    /**
      * Constructs a ReportAttachment for this Report.
      *
      * @param string $type the type of the attachment
@@ -1064,7 +994,6 @@ class Report extends ActiveRecord
         return new ReportAttachment(ArrayHelper::merge([
             'report_id' => $this->id,
             'type' => $type,
-            'storage' => StorageInterface::S3,
         ], $data));
     }
 
@@ -1435,16 +1364,10 @@ class Report extends ActiveRecord
      */
     public function getShareImage()
     {
-        $pictureURL = static::getPictureUrl($this->id, ReportAttachment::SIZE_PICTURE_MEDIUM);
-
-        $image = $pictureURL;
-
-        if (! preg_match('/^http(?s)/', $pictureURL)) {
-            $image = Url::base(true) . $pictureURL;
-        }
+        $image = Url::base(true) . static::getPictureUrl($this->id, ReportAttachment::SIZE_PICTURE_MEDIUM);
 
         if ($image == static::getPlaceholderImage()) {
-            return Url::to(Header::SHARE_IMAGE_800, true);
+            return Url::to(Header::SHARE_IMAGE_MD, true);
         }
 
         return $image;
@@ -1598,8 +1521,7 @@ class Report extends ActiveRecord
 
     /**
      * Returns the attached pictures of the report.
-
-     * @param $useBasePath bool
+     * @param bool $useBasePath
      * @return array
      */
     public function getPictures($useBasePath = false)
@@ -1669,19 +1591,10 @@ class Report extends ActiveRecord
         }, ArrayHelper::getValue(Yii::$app->params, 'cache.db.reportCommentCount'));
     }
 
-    /**
-     * @return string
-     */
-    public function getReportActivityCount()
-    {
-        return $this->getDb()->cache(function ($db) {
-            return $this->getReportActivities()->count();
-        }, ArrayHelper::getValue(Yii::$app->params, 'cache.db.reportCommentCount'));
-    }
-
     public function checkUrlIsCorrect($source)
     {
         $actualUrl = Yii::$app->request->getAbsoluteUrl();
+        $actualUrl = str_replace('http://', 'https://', $actualUrl);  // Absolut url always returns http:// :(
         $correctUrl = $this->getUrl($source);
 
         if ($actualUrl !== $correctUrl) {
@@ -1747,8 +1660,7 @@ class Report extends ActiveRecord
         }
 
         // upon district exists it should be displayed always
-        $district = District::getDistrictById($this->district_id);
-        $location .= $district !== null ? ' (' . $district->name . ')' : '';
+        $location .= $this->district ? ' (' . $this->district->name . ')' : '';
         return $location;
     }
 
@@ -1776,35 +1688,20 @@ class Report extends ActiveRecord
     }
 
     /**
-     * @return array
+     * @return bool
      */
-    public function getMapLayers()
+    public function isRoadMapAllowed()
     {
-        if (empty($this->reportMapLayer)) {
-            return [];
+        if (!$this->report_category_id || $this->city_id != City::BUDAPEST) {
+            return false;
         }
 
-        $identifiers = [];
-
-        foreach ($this->reportMapLayer as $layer) {
-            $identifiers[] = $layer->map_layer_id;
+        switch ($this->report_category_id) {
+            case self::CATEGORY_POTHOLE:
+            case self::CATEGORY_GREENERY:
+                return true;
+            default:
+                return false;
         }
-
-        return $identifiers;
-    }
-
-    /**
-     * Convert $url to absolute path on disk when the input is not a valid url
-     *
-     * @param string $url
-     * @return string
-     */
-    public static function preparePictureUrl($url)
-    {
-        if (filter_var($url, FILTER_VALIDATE_URL)) {
-            return $url;
-        }
-
-        return Yii::getAlias('@app/web' . $url);
     }
 }

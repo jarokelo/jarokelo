@@ -4,7 +4,9 @@ namespace app\models\forms;
 
 use app\components\traits\PrivacyPolicyValidatorTrait;
 use app\models\db\District;
+use app\models\db\ProjectConfig;
 use app\models\db\ReportAttachment;
+use app\models\db\ReportTaxonomy;
 use Yii;
 use app\components\EmailHelper;
 use app\models\db\Report;
@@ -38,6 +40,8 @@ class ReportForm extends Report
     public $email;
 
     public $privacyPolicy;
+    public $reportTaxonomyId;
+    public $customForm;
 
     private static $_nameFirst;
     private static $_nameLast;
@@ -69,7 +73,7 @@ class ReportForm extends Report
     {
         return ArrayHelper::merge(parent::rules(), [
             [['pictures', 'videos'], 'each', 'rule' => ['string']],
-            [['pictures'], 'required', 'on' => [self::SCENARIO_DEFAULT], 'message' => Yii::t('report', 'error.missing-pictures')],
+            [['pictures'], 'required', 'on' => self::SCENARIO_DEFAULT, 'message' => Yii::t('report', 'error.missing-pictures')],
             [['address'], 'required', 'except' => self::SCENARIO_DRAFT],
             [['address', 'nameFirst', 'nameLast', 'email'], 'string'],
             [['address', 'nameFirst', 'nameLast', 'email'], 'required'],
@@ -103,6 +107,26 @@ class ReportForm extends Report
                     return !Yii::$app->user->isGuest;
                 },
             ],
+            [
+                ['reportTaxonomyId'],
+                'required',
+                'when' => function ($model) {
+                    $isItemAllowed = Yii::$app->db->cache(function () {
+                        return ProjectConfig::isItemAllowed(ProjectConfig::KEY_REPORT_TAXONOMIES);
+                    }, 60);
+
+                    if ($isItemAllowed) {
+                        return true;
+                    }
+
+                    return false;
+                },
+                'message' => Yii::t('report', 'Alkategória nem lehet üres.'),
+            ],
+            [
+                ['reportTaxonomyId'],
+                'reportTaxonomyValidator',
+            ],
             [['description'], 'required'],
             ['user_location', 'addressValidator'],
             [['privacyPolicy'], 'validatePrivacyPolicy'],
@@ -117,6 +141,24 @@ class ReportForm extends Report
             'email' => \Yii::t('report', 'form.email'),
             'acceptTerm' => \Yii::t('report', 'form.email'),
         ]);
+    }
+
+    /**
+     * @param string $attribute
+     * @param array $params
+     */
+    public function reportTaxonomyValidator($attribute, array $params = null)
+    {
+        $taxonomies = Yii::$app->db->cache(function () {
+            return ReportTaxonomy::getList($this->report_category_id);
+        }, 15);
+
+        if (!in_array($this->{$attribute}, array_keys($taxonomies))) {
+            $this->addError($attribute, Yii::t('report', 'Hibás alkategória. Kérjük ellenőrizd a válaszod!'));
+            return false;
+        }
+
+        return true;
     }
 
     /**
